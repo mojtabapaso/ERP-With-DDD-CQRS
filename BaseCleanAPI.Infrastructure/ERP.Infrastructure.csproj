@@ -25,4 +25,11 @@
   <ItemGroup>
     <ProjectReference Include="..\BaseCleanAPI.Application\ERP.Application.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EventHandlers\" />
+    <Folder Include="Email\" />
+    <Folder Include="Caching\" />
+    <Folder Include="Logging\" />
+    <Folder Include="SMS\" />
+  </ItemGroup>
 </Project>

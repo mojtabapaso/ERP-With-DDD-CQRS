@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace ERP.Application.Interface.Logic;
+namespace ERP.Infrastructure.Authentication.Interfaces;
 public interface IJWTManager
 {
     bool VerifyToken(string token);

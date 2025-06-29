@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ERP.Application.DataTransferObjects;
-using ERP.Application.Interface.Logic;
 using ERP.Domain.Entities;
 using System.Security.Claims;
+using ERP.Infrastructure.Authentication.Interfaces;
 
 namespace ERP.WebAPI.Controllers;
 
@@ -36,8 +36,7 @@ public class AuthController : BaseController
 
 		var newUser = new ApplicationUser
 		{
-			Id = Guid.NewGuid().ToString(),
-			UserName = registerDTO.UserName,
+			UserName = registerDTO.UserName
 		};
 
 		var createUserResult = await userManager.CreateAsync(newUser, registerDTO.Password);

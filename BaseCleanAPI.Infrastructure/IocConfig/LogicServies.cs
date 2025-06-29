@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ERP.Application.Interface.Logic;
-using ERP.Application.Services;
+using ERP.Infrastructure.Authentication.Interfaces;
+using ERP.Infrastructure.Authentication.Services;
 
 namespace ERP.Infrastructure.IocConfig;
 

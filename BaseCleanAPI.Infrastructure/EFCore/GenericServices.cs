@@ -1,29 +1,29 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using ERP.Application.Interface.Entity;
+using ERP.Application.Interfaces;
 using ERP.Domain.Common;
 using ERP.Domain.Specifications;
 using ERP.Infrastructure.Context;
-using ERP.Infrastructure.UnitOfWork;
+//using ERP.Infrastructure.UnitOfWork;
 
 namespace ERP.Infrastructure.Services;
 
-public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : BaseEntity, new()
+public class GenericService<TEntity> : IGenericServices<TEntity> where TEntity : BaseEntity, new()
 {
     private readonly ERPDBContext _context;
     private readonly DbSet<TEntity> _dbSet;
-    private readonly IUnitOfWork _unitOfWork;
+    //private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<GenericService<TEntity>> _logger;
 
     public GenericService(
         ERPDBContext context,
-        IUnitOfWork unitOfWork,
+        //IUnitOfWork unitOfWork,
         ILogger<GenericService<TEntity>> logger)
     {
         _context = context;
         _dbSet = _context.Set<TEntity>();
-        _unitOfWork = unitOfWork;
+        //_unitOfWork = unitOfWork;
         _logger = logger;
     }
 
@@ -104,7 +104,7 @@ public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : 
         using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
-            await _unitOfWork.SaveChangesAsync();
+            //await _unitOfWork.SaveChangesAsync();
             await transaction.CommitAsync();
             _logger.LogInformation("Transaction committed for {EntityType}", typeof(TEntity).Name);
         }
@@ -123,15 +123,145 @@ public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : 
         if (spec.Criteria != null)
             query = query.Where(spec.Criteria);
 
-        if (spec.OrderBy != null)
-            query = query.OrderBy(spec.OrderBy);
+        //if (spec.OrderBy != null)
+        //    query = query.OrderBy(spec.OrderBy);
 
-        if (spec.OrderByDescending != null)
-            query = query.OrderByDescending(spec.OrderByDescending);
+        //if (spec.OrderByDescending != null)
+        //    query = query.OrderByDescending(spec.OrderByDescending);
 
         if (spec.IsPaginationEnabled)
             query = query.Skip(spec.Skip).Take(spec.Take);
 
         return query;
+    }
+
+    public void Add(TEntity entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Remove(TEntity entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Remove(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RemoveByRowId(Guid rowId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void HardDelete(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void HardDeleteByRowId(Guid rowId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task HardDeleteByRowIdAsync(Guid rowId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public TEntity? FindById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<TEntity?> FindByIdAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public TEntity? FindByRowId(Guid rowId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<TEntity?> FindByRowIdAsync(Guid rowId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<TEntity> GetAll(int? count = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<TEntity>> GetAllAsync(int? count = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<TEntity> GetAllByPagination(int offset, int fetch)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<TEntity>> GetAllByPaginationAsync(int offset, int fetch)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<TEntity> ReadAll(int? count = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<TEntity>> ReadAllAsync(int? count = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<TEntity> ReadAllByPagination(int offset, int fetch)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<TEntity>> ReadAllByPaginationAsync(int offset, int fetch)
+    {
+        throw new NotImplementedException();
+    }
+
+    public TEntity? ReadById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<TEntity?> ReadByIdAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public TEntity? ReadByRowId(Guid rowId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<TEntity?> ReadByRowIdAsync(Guid rowId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IQueryable<TEntity> AsQueryable()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<int> CountAsync(bool includeDeleted = false)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Save()
+    {
+        throw new NotImplementedException();
     }
 }

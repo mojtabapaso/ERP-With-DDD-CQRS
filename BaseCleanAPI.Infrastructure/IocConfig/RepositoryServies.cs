@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ERP.Application.Interface.Entity;
-using ERP.Application.Interface.Logic;
 using ERP.Infrastructure.Services;
 
 namespace ERP.Infrastructure.IocConfig;

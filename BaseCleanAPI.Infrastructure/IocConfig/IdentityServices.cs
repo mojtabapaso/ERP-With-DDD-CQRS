@@ -8,8 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using ERP.Domain.Entities;
 using ERP.Infrastructure.Context;
-using ERP.Application.Interface.Logic;
-using ERP.Application.Services;
+using ERP.Application.Interfaces;
+using ERP.Application;
 namespace ERP.Infrastructure.IocConfig;
 
 public static class IdentityServices

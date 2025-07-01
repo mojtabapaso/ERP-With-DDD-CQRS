@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using ERP.Infrastructure.Persistence.Context;
 
-namespace ERP.Infrastructure.Context;
+namespace ERP.Infrastructure.Persistence.DesignTimeFactories;
 
 public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ERPDBContext>
 {

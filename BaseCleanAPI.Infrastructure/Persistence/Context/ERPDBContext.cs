@@ -1,11 +1,14 @@
-﻿using ERP.Domain.Entities;
+﻿using ERP.Domain.Common;
+using ERP.Domain.Entities;
+using ERP.Domain.Enums;
+using ERP.Infrastructure.Persistence.Configurations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ERP.Domain.Common;  
 using System.Reflection;
+using System.Reflection.Emit;
 
-namespace ERP.Infrastructure.Context;
+namespace ERP.Infrastructure.Persistence.Context;
 
 
 public class ERPDBContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
@@ -25,11 +28,13 @@ public class ERPDBContext : IdentityDbContext<ApplicationUser, ApplicationRole, 
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<InvoiceItem> InvoiceItems { get; set; }
     public DbSet<Customer> Customers { get; set; }
-    public DbSet<AuditLog> AuditLogs { get; set; }
+    public DbSet<Audit> AuditLogs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        builder.ApplyConfiguration(new AuditLogConfiguration());
+
 
         // اگر نیاز به تنظیمات خاص مثل Fluent API داری، اینجا تعریف کن
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

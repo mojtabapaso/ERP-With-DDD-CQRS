@@ -9,5 +9,5 @@ public class Invoice : BaseEntity
     public Guid CustomerId { get; set; }
     public Customer Customer { get; set; } = default!;
     public ICollection<InvoiceItem> Items { get; set; } = new List<InvoiceItem>();
-    public decimal TotalAmount => Items.Sum(x => x.Quantity * x.UnitPrice);
+    public long TotalAmount => Items.Sum(x => x.Quantity * x.UnitPrice);
 }

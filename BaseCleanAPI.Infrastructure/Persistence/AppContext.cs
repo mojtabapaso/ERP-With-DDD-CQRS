@@ -8,18 +8,18 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace ERP.Infrastructure.Persistence.Context;
+namespace ERP.Infrastructure.Persistence;
 
 
-public class ERPDBContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
+public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
 {
-    public ERPDBContext(DbContextOptions<ERPDBContext> options) : base(options)
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
     // Auth
     public DbSet<ApplicationUser> Users { get; set; }
+    public DbSet<ApplicationRole> Roles { get; set; }
     public DbSet<UserRefreshTokens> UserRefreshToken { get; set; }
-    public DbSet<UserRefreshToken> userRefreshTokens { get; set; }
     // ERP Entities
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Company> Companies { get; set; }
@@ -34,7 +34,8 @@ public class ERPDBContext : IdentityDbContext<ApplicationUser, ApplicationRole, 
     {
         base.OnModelCreating(builder);
         builder.ApplyConfiguration(new AuditLogConfiguration());
-
+        builder.ApplyConfiguration(new EmployeeConfiguration());
+        builder.ApplyConfiguration(new CustomerConfiguration());
 
         // اگر نیاز به تنظیمات خاص مثل Fluent API داری، اینجا تعریف کن
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

@@ -4,20 +4,19 @@ using Microsoft.Extensions.Logging;
 using ERP.Application.Interfaces;
 using ERP.Domain.Common;
 using ERP.Domain.Specifications;
-using ERP.Infrastructure.Persistence.Context;
 //using ERP.Infrastructure.UnitOfWork;
 
 namespace ERP.Infrastructure.Services;
 
 public class GenericService<TEntity> : IGenericServices<TEntity> where TEntity : BaseEntity, new()
 {
-    private readonly ERPDBContext _context;
+    private readonly Persistence.AppDbContext _context;
     private readonly DbSet<TEntity> _dbSet;
     //private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<GenericService<TEntity>> _logger;
 
     public GenericService(
-        ERPDBContext context,
+        Persistence.AppDbContext context,
         //IUnitOfWork unitOfWork,
         ILogger<GenericService<TEntity>> logger)
     {

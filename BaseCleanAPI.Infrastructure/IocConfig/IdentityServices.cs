@@ -7,7 +7,6 @@ using System.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using ERP.Domain.Entities;
-using ERP.Infrastructure.Persistence.Context;
 using ERP.Application.Interfaces;
 using ERP.Application;
 namespace ERP.Infrastructure.IocConfig;
@@ -16,9 +15,9 @@ public static class IdentityServices
 {
     public static IServiceCollection AddIdentityServies(this IServiceCollection Services)
     {
-        Services.AddIdentity<ApplicationUser, IdentityRole>()
+        Services.AddIdentity<ApplicationUser, ApplicationRole>()
         .AddUserManager<UserManager<ApplicationUser>>()
-        .AddRoleManager<RoleManager<IdentityRole>>().AddEntityFrameworkStores<ERPDBContext>();
+        .AddRoleManager<RoleManager<ApplicationRole>>().AddEntityFrameworkStores<Persistence.AppDbContext>();
         
         var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 

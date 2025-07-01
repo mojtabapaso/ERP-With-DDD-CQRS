@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ERP.Infrastructure.Context;
+using ERP.Infrastructure.Persistence.Context;
 
 namespace ERP.Infrastructure.IocConfig;
 

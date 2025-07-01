@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using ERP.Application.Interfaces;
 using ERP.Domain.Common;
 using ERP.Domain.Specifications;
-using ERP.Infrastructure.Context;
+using ERP.Infrastructure.Persistence.Context;
 //using ERP.Infrastructure.UnitOfWork;
 
 namespace ERP.Infrastructure.Services;

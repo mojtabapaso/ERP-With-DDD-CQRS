@@ -7,7 +7,7 @@ using System.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using ERP.Domain.Entities;
-using ERP.Infrastructure.Context;
+using ERP.Infrastructure.Persistence.Context;
 using ERP.Application.Interfaces;
 using ERP.Application;
 namespace ERP.Infrastructure.IocConfig;
@@ -19,7 +19,7 @@ public static class IdentityServices
         Services.AddIdentity<ApplicationUser, IdentityRole>()
         .AddUserManager<UserManager<ApplicationUser>>()
         .AddRoleManager<RoleManager<IdentityRole>>().AddEntityFrameworkStores<ERPDBContext>();
-
+        
         var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
         string jwtKey = config["Jwt:SecretKey"];

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ERP.Infrastructure.Persistence.Context;
 
 namespace ERP.Infrastructure.IocConfig;
 
@@ -13,7 +12,7 @@ public static class DataBaseContextServies
 
 		string connectionString = config["ConnectionStrings:ERPDBConecnection"];
 
-		Services.AddDbContext<ERPDBContext>(option =>
+		Services.AddDbContext<Persistence.AppDbContext>(option =>
 		{
 			option.UseSqlServer(connectionString);
 		});

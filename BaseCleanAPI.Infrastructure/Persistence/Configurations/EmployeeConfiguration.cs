@@ -10,11 +10,15 @@ using System.Threading.Tasks;
 
 namespace ERP.Infrastructure.Persistence.Configurations;
 
-public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
+public class EmployeeConfiguration : BaseEntityConfiguration<Employee>
 {
-    public void Configure(EntityTypeBuilder<Employee> builder)
+    public virtual void Configure(EntityTypeBuilder<Employee> builder)
     {
-        
+        base.Configure(builder);
+
+        builder.ToTable("Employee", "api");
+
+
         builder.Property(e => e.FirstName)
                .HasColumnType("NVARCHAR(100)")
                .IsRequired();
@@ -31,9 +35,6 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
         builder.Property(e => e.Position)
                .HasConversion<string>()
                .HasColumnType("NVARCHAR(100)")
-               .IsRequired();
-
-        builder.Property(e => e.BirthDate)
                .IsRequired();
 
         builder.HasOne(e => e.Company)

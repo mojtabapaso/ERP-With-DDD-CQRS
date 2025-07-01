@@ -8,7 +8,7 @@ public class AuditLogConfiguration : IEntityTypeConfiguration<Audit>
 {
     public void Configure(EntityTypeBuilder<Audit> builder)
     {
-        builder.ToTable("Audit", "Log");
+        builder.ToTable("Audit", "log");
 
         builder.HasOne(e => e.User)
                         .WithMany()
@@ -20,6 +20,5 @@ public class AuditLogConfiguration : IEntityTypeConfiguration<Audit>
         builder.Property(x => x.EntityName).HasColumnType("NVARCHAR(100)").IsRequired();
         builder.Property(x => x.NewValues).HasColumnType("nvarchar(max)");
         builder.Property(x => x.OldValues).HasColumnType("nvarchar(max)");
-
     }
 }

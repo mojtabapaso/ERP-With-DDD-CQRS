@@ -2,7 +2,7 @@
 namespace Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/")]
 public class BaseController : ControllerBase
 {
 

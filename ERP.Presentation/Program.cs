@@ -1,4 +1,5 @@
-﻿using ERP.Infrastructure.IocConfig;
+﻿using Asp.Versioning;
+using ERP.Infrastructure.IocConfig;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,12 @@ Services.AddMedaitRConfig();
 Services.AddDbContextServies(builder.Configuration);     // Register DbContext
 Services.AddIdentityServies();      // Register Identity
 Services.AddLogicServies();         // Register application logic (e.g., services, handlers)
+Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+});
 
 var app = builder.Build();
 

@@ -42,7 +42,7 @@ public class    CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeReq
         //TODO CancellationToken what it is ???
         var employee = new EmployeeFactory();
         //:TODO use mapper hear 
-        var newEmployee = employee.Create(request.CreateEmployeeDto.FirstName, request.CreateEmployeeDto.LastName, request.CreateEmployeeDto.NationalCode,request.CreateEmployeeDto.BirthDate, request.CreateEmployeeDto.EmployeePosition, request.CreateEmployeeDto.CompanyId, request.CreateEmployeeDto.Company);
+        var newEmployee = employee.Create(request.CreateEmployeeDto.FirstName, request.CreateEmployeeDto.LastName, request.CreateEmployeeDto.NationalCode,request.CreateEmployeeDto.BirthDate, request.CreateEmployeeDto.EmployeePosition, request.CreateEmployeeDto.CompanyId,request.CreateEmployeeDto.DegreeLevel);
         await employeeRepository.CreateAsync(newEmployee);
         return Result<string>.SuccessResult("Create OK");
     }

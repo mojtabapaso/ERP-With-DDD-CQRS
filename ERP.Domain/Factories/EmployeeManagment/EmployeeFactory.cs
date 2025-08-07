@@ -13,7 +13,9 @@ public class EmployeeFactory : IEmployeeFactory
          BirthDate birthDateUtc,
          EmployeePosition employeePosition,
          int companyId,
-         Company company)
+         Company company,
+        DegreeLevel? degreeLevel
+        )
     {
         var employee = new Employee(
             firstName,
@@ -22,13 +24,14 @@ public class EmployeeFactory : IEmployeeFactory
             birthDateUtc,
             employeePosition,
             companyId,
-            company);
+            company, degreeLevel
+            );
 
         return employee;
     }
-    public Employee Create( FirstName firstName, LastName lastName, NationalCode nationalCode, BirthDate birthDateUtc, EmployeePosition employeePosition, int companyId)
+    public Employee Create(FirstName firstName, LastName lastName, NationalCode nationalCode, BirthDate birthDateUtc, EmployeePosition employeePosition, int companyId, DegreeLevel? degreeLevel)
     {
         var newCompony = new Company();
-        return new Employee( firstName, lastName, nationalCode, birthDateUtc, employeePosition, companyId, newCompony);
+        return new Employee(firstName, lastName, nationalCode, birthDateUtc, employeePosition, companyId, newCompony, degreeLevel);
     }
 }

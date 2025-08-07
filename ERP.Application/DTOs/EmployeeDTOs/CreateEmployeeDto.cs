@@ -12,7 +12,8 @@ public sealed record CreateEmployeeDto
     public EmployeePosition EmployeePosition { get; init; }
     public int CompanyId { get; init; }
     public DegreeLevel? DegreeLevel { get; init; }
-    public Company Company { get; init; }
+    //public Company Company { get; init; }
+
 }
 
 

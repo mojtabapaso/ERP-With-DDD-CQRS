@@ -9,10 +9,10 @@ namespace ERP.Domain.Entities;
 public class Employee : BaseEntity
 
 {
-    private Employee() : base(default!) { }
+    private Employee() : base() { }
 
     //public Employee(BaseId id) : base(id) { }
-    public Employee(FirstName firstName, LastName lastName, NationalCode nationalCode, BirthDate birthDateUtc, EmployeePosition employeePosition, int companyId, Company company) : base(default!)
+    public Employee(FirstName firstName, LastName lastName, NationalCode nationalCode, BirthDate birthDateUtc, EmployeePosition employeePosition, int companyId, Company company, DegreeLevel? degreeLevel) : base()
     {
 
         _firstName = firstName;
@@ -22,7 +22,9 @@ public class Employee : BaseEntity
         _employeePosition = employeePosition;
         _companyId = companyId;
         _company = company;
-        RaiseEventEvent(new NewEmployeeCreated(this));
+        //_employeeSalary = employeeSalary;
+        _degreeLevel = degreeLevel;
+        //RaiseEventEvent(new NewEmployeeCreated(this));
         //CreateEmployee() 
     }
 
@@ -34,7 +36,7 @@ public class Employee : BaseEntity
     private int _companyId;
     private Company _company;
     private LinkedList<EmployeeSalary> _employeeSalary;
-    private DegreeLevel _degreeLevel;
+    private DegreeLevel? _degreeLevel;
 
 
     // Domain Activity simple for test

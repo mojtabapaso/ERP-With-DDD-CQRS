@@ -21,7 +21,7 @@ public class UpdateEmployeeCommandHandler : ICommandHandler<UpdateEmployeeComman
         var employeeExist = await employeeRepository.ExistByIdAsync(command.id);
         if (!employeeExist)
             throw new EmployeeNotFoundException();
-        var employeeFac = employeeFactory.Create( command.firstName, command.lastName, command.nationalCode, command.birthDateUtc, command.employeePosition, command.companyId, command.company);
+        var employeeFac = employeeFactory.Create( command.firstName, command.lastName, command.nationalCode, command.birthDateUtc, command.employeePosition, command.companyId, command.company,command.DegreeLevel);
         await employeeRepository.UpdateAsync(employeeFac);
 
     }

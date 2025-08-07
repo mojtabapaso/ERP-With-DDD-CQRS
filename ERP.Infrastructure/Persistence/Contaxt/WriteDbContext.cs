@@ -1,4 +1,4 @@
-﻿using ERP.Domain.Common;
+﻿using ERP.Application.Interfaces;
 using ERP.Domain.Entities;
 using ERP.Domain.Entities.User;
 using ERP.Domain.ValueObjects;
@@ -6,16 +6,26 @@ using ERP.Infrastructure.EFCore.Configurations;
 using ERP.Infrastructure.Persistence.Configurations.WriteModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
-using System.Reflection.Emit;
 
 namespace ERP.Infrastructure.Persistence.Contaxt;
 
-public  class WriteDbContext :IdentityDbContext<ApplicationUser, ApplicationRole, int>
+
+public class WriteDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
 {
-    public WriteDbContext(DbContextOptions<WriteDbContext> options) : base(options)
+    private readonly IUserContextService userContext;
+    private readonly IAuditService auditService;
+
+    public WriteDbContext(DbContextOptions<WriteDbContext> options, IUserContextService userContext, IAuditService auditService) : base(options)
     {
+        this.userContext = userContext;
+        this.auditService = auditService;
     }
+    public WriteDbContext(DbContextOptions<WriteDbContext> options)
+    : base(options)
+    {
+
+    }
+
     // Auth
     public DbSet<ApplicationUser> Users { get; set; }
     public DbSet<ApplicationRole> Roles { get; set; }
@@ -28,7 +38,7 @@ public  class WriteDbContext :IdentityDbContext<ApplicationUser, ApplicationRole
     //public DbSet<Invoice> Invoices { get; set; }
     //public DbSet<InvoiceItem> InvoiceItems { get; set; }
     //public DbSet<Customer> Customers { get; set; }
-    //public DbSet<Audit> AuditLogs { get; set; }
+    public DbSet<Audit> AuditLogs { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -38,9 +48,18 @@ public  class WriteDbContext :IdentityDbContext<ApplicationUser, ApplicationRole
         builder.Ignore<BaseId>();
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var entries = ChangeTracker.Entries<BaseEntity>();
-        return base.SaveChangesAsync(cancellationToken);
+        var auditEntries = userContext != null
+            ? auditService.PrepareAuditEntries(ChangeTracker, userContext.UserId)
+            : new List<AuditEntry>();
+
+        var result = await base.SaveChangesAsync(cancellationToken);
+
+        if (userContext != null)
+            await auditService.SaveAuditLogsAsync(this, auditEntries);
+
+        return result;
     }
 }

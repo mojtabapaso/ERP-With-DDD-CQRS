@@ -16,12 +16,20 @@ internal class BaseWriteConfiguration<TEntity> : IEntityTypeConfiguration<TEntit
 
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
-        // _id property
+        var baseIdConverter = new ValueConverter<BaseId, int>(
+          baseId => baseId.Value,
+          value => new BaseId(value)
+      );
+
         builder.Property<BaseId>("_id")
                .HasField("_id")
-               .UsePropertyAccessMode(PropertyAccessMode.Field)
                .HasConversion(baseIdConverter)
+               .UseIdentityColumn()
+               .ValueGeneratedOnAdd()
+               .UsePropertyAccessMode(PropertyAccessMode.Field)
                .HasColumnName("Id");
+
+
 
 
         builder.HasKey("_id");
@@ -31,7 +39,9 @@ internal class BaseWriteConfiguration<TEntity> : IEntityTypeConfiguration<TEntit
                .HasField("_rowId")
                .UsePropertyAccessMode(PropertyAccessMode.Field)
                .HasConversion(rowIdConverter)
-               .HasColumnName("RowId");
+               .HasColumnName("RowId")
+               .HasDefaultValueSql("NEWID()");
+
 
         // _isDeleted property
         builder.Property(typeof(bool), "_isDeleted")

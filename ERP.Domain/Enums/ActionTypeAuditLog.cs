@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ERP.Domain.Enums;
 
-public enum ActionTypeAuditLog
+public enum ActionTypeAuditLog : byte
 {
     NONE = 0,
     INSERT = 1,

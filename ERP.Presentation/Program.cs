@@ -15,6 +15,7 @@ Services.AddMemoryCache();
 Services.AddAutoMapperServies();
 
 // ───── Custom Services ─────
+Services.AddAuditServies();
 Services.AddInfrastructureServices(builder.Configuration);
 Services.AddMedaitRConfig();
 Services.AddDbContextServies(builder.Configuration);     // Register DbContext

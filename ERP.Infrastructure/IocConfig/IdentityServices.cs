@@ -3,6 +3,7 @@ using ERP.Application.Interfaces;
 using ERP.Domain.Entities.User;
 using ERP.Infrastructure.Persistence;
 using ERP.Infrastructure.Persistence.Contaxt;
+using ERP.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -63,6 +64,23 @@ public static class IdentityServices
                 policy.RequireClaim("SpecialAccess");
             });
         });
+
+
+      
+
+        return Services;
+    }
+}
+
+public static class AuditServices
+{
+    public static IServiceCollection AddAuditServies(this IServiceCollection Services)
+    {
+
+        Services.AddHttpContextAccessor();
+        Services.AddScoped<IUserContextService, UserContextService>();
+        Services.AddScoped<IAuditService, AuditService>();
+
         return Services;
     }
 }

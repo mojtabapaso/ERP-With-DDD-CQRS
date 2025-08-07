@@ -1,5 +1,4 @@
-﻿using Api.Controllers;
-using Asp.Versioning;
+﻿using Asp.Versioning;
 using ERP.Application.DTOs.EmployeeDTOs;
 using ERP.Application.Features.Commands.Employee.CreateEmployee;
 using MediatR;
@@ -18,8 +17,8 @@ public class EmployeeController : ControllerBase
         this.mediator = mediator;
     }
 
-    [HttpGet("Employee")]
-    public async Task< IActionResult> Index(CreateEmployeeDto createEmployee)
+    [HttpPost("Employee")]
+    public async Task<IActionResult> Index([FromBody] CreateEmployeeDto createEmployee)
     {
         var es = await mediator.Send(new CreateEmployeeRequest() { CreateEmployeeDto = createEmployee });
         return Ok(es);

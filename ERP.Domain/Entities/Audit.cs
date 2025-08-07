@@ -9,7 +9,7 @@ public class Audit
 {
     public int Id { get; set; }
     public int UserId { get; set; }
-    public ApplicationUser User { get; set; }
+    //public ApplicationUser User { get; set; }
     public ActionTypeAuditLog ActionType { get; set; } = ActionTypeAuditLog.NONE;
     public string EntityName { get; set; }
     public DateTime Timestamp { get; set; }

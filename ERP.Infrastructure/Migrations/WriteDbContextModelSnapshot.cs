@@ -38,10 +38,10 @@ namespace ERP.Infrastructure.Migrations
                         .HasColumnType("NVARCHAR(100)");
 
                     b.Property<string>("NewValues")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(MAX)");
 
                     b.Property<string>("OldValues")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(MAX)");
 
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
@@ -53,16 +53,17 @@ namespace ERP.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Audit", "log");
                 });
 
             modelBuilder.Entity("ERP.Domain.Entities.Company", b =>
                 {
                     b.Property<int>("_id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
 
                     b.Property<int>("Version")
                         .HasColumnType("int");
@@ -81,8 +82,10 @@ namespace ERP.Infrastructure.Migrations
                         .HasColumnName("Name");
 
                     b.Property<Guid>("_rowId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("RowId");
+                        .HasColumnName("RowId")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<DateTime?>("_updatedAt")
                         .HasColumnType("datetime2")
@@ -96,28 +99,59 @@ namespace ERP.Infrastructure.Migrations
             modelBuilder.Entity("ERP.Domain.Entities.Employee", b =>
                 {
                     b.Property<int>("_id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("Id");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
+
                     b.Property<int>("Version")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("_birthDateUtc")
+                        .HasColumnType("DATETIME")
+                        .HasColumnName("BirthDateUtc");
+
+                    b.Property<int>("_companyId")
+                        .HasColumnType("INT")
+                        .HasColumnName("CompanyId");
 
                     b.Property<DateTime>("_createdAt")
                         .HasColumnType("datetime2")
                         .HasColumnName("CreatedAt");
 
+                    b.Property<byte?>("_degreeLevel")
+                        .HasColumnType("TINYINT")
+                        .HasColumnName("DegreeLevel");
+
+                    b.Property<byte>("_employeePosition")
+                        .HasColumnType("TINYINT")
+                        .HasColumnName("EmployeePosition");
+
                     b.Property<string>("_firstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("NVARCHAR(250)")
                         .HasColumnName("FirstName");
 
                     b.Property<bool>("_isDeleted")
                         .HasColumnType("bit")
                         .HasColumnName("IsDeleted");
 
+                    b.Property<string>("_lastName")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(250)")
+                        .HasColumnName("LastName");
+
+                    b.Property<string>("_nationalCode")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(12)")
+                        .HasColumnName("NationalCode");
+
                     b.Property<Guid>("_rowId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("RowId");
+                        .HasColumnName("RowId")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<DateTime?>("_updatedAt")
                         .HasColumnType("datetime2")
@@ -333,17 +367,6 @@ namespace ERP.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("ERP.Domain.Entities.Audit", b =>
-                {
-                    b.HasOne("ERP.Domain.Entities.User.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

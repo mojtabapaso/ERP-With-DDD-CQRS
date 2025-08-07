@@ -14,12 +14,16 @@ namespace ERP.Infrastructure.Migrations
             migrationBuilder.EnsureSchema(
                 name: "log");
 
+            migrationBuilder.EnsureSchema(
+                name: "api");
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    RowId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -35,6 +39,7 @@ namespace ERP.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    RowId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -56,51 +61,66 @@ namespace ERP.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Companies",
+                name: "Audit",
+                schema: "log",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    RowId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Version = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ActionType = table.Column<byte>(type: "TINYINT", nullable: false),
+                    EntityName = table.Column<string>(type: "NVARCHAR(100)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    OldValues = table.Column<string>(type: "NVARCHAR(MAX)", nullable: true),
+                    NewValues = table.Column<string>(type: "NVARCHAR(MAX)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Companies", x => x.Id);
+                    table.PrimaryKey("PK_Audit", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employees",
+                name: "Company",
+                schema: "api",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    RowId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "NVARCHAR(250)", nullable: false),
+                    RowId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Version = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.PrimaryKey("PK_Company", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmployeeSalary",
+                name: "Employee",
+                schema: "api",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BirthDateUtc = table.Column<DateTime>(type: "DATETIME", nullable: false),
+                    CompanyId = table.Column<int>(type: "INT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DegreeLevel = table.Column<byte>(type: "TINYINT", nullable: true),
+                    EmployeePosition = table.Column<byte>(type: "TINYINT", nullable: false),
+                    FirstName = table.Column<string>(type: "NVARCHAR(250)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    RowId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LastName = table.Column<string>(type: "NVARCHAR(250)", nullable: false),
+                    NationalCode = table.Column<string>(type: "NVARCHAR(12)", nullable: false),
+                    RowId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Version = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployeeSalary", x => x.Id);
+                    table.PrimaryKey("PK_Employee", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -209,31 +229,6 @@ namespace ERP.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Audit",
-                schema: "log",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ActionType = table.Column<byte>(type: "TINYINT", nullable: false),
-                    EntityName = table.Column<string>(type: "NVARCHAR(100)", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
-                    OldValues = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NewValues = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Audit", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Audit_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -272,12 +267,6 @@ namespace ERP.Infrastructure.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Audit_UserId",
-                schema: "log",
-                table: "Audit",
-                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -303,13 +292,12 @@ namespace ERP.Infrastructure.Migrations
                 schema: "log");
 
             migrationBuilder.DropTable(
-                name: "Companies");
+                name: "Company",
+                schema: "api");
 
             migrationBuilder.DropTable(
-                name: "Employees");
-
-            migrationBuilder.DropTable(
-                name: "EmployeeSalary");
+                name: "Employee",
+                schema: "api");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

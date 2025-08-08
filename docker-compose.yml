@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  erp-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"     
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__ConnectionWrite: "Server=db;Database=Write_ERP_0;User Id=sa;Password=Your_password123;TrustServerCertificate=True;"
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "Your_password123"    
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"    
+    volumes:
+      - mssql-data:/var/opt/mssql     
+    restart: unless-stopped
+
+volumes:
+  mssql-data:

@@ -18,9 +18,13 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpPost("Employee")]
-    public async Task<IActionResult> Index([FromBody] CreateEmployeeDto createEmployee)
+    public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeDto createEmployee)
     {
-        var es = await mediator.Send(new CreateEmployeeRequest() { CreateEmployeeDto = createEmployee });
-        return Ok(es);
+        var res = await mediator.Send(new CreateEmployeeRequest() { CreateEmployeeDto = createEmployee });
+        if (!res.IsSuccess)
+        {
+            return BadRequest(res);
+        }
+        return Ok(res);
     }
 }

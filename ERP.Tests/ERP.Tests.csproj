@@ -25,7 +25,7 @@
     <ProjectReference Include="..\ERP.Application\ERP.Application.csproj" />
     <ProjectReference Include="..\ERP.Infrastructure\ERP.Infrastructure.csproj" />
     <ProjectReference Include="..\ERP.Presentation\ERP.Presentation.csproj" />
-    <ProjectReference Include="..\ERPShared.Common\ERP.Shared.Common.csproj" />
+    <ProjectReference Include="..\ERP.Shared.Common\ERP.Shared.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{02EA68
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Shared.Abstraction", "..\ERP.Shared.Abstraction\ERP.Shared.Abstraction.csproj", "{45FECE8F-C70E-46BA-89AF-AA3FA359DABD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Shared.Common", "..\ERPShared.Common\ERP.Shared.Common.csproj", "{62E8D915-5524-4010-87E0-D5E76A44CE10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Shared.Common", "..\ERP.Shared.Common\ERP.Shared.Common.csproj", "{62E8D915-5524-4010-87E0-D5E76A44CE10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Tests", "..\ERP.Tests\ERP.Tests.csproj", "{6CE3BB65-8FC1-4EB5-9987-BBDD38DA9E9B}"
 EndProject

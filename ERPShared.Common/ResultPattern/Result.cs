@@ -8,7 +8,7 @@ public class Result<T>
     public T? Data { get; set; }
 
 
-    public static Result<T> SuccessResult(T? data, string? message = null)
+    public static Result<T> Success(T? data, string? message = null)
     {
         return new Result<T>
         {
@@ -17,7 +17,7 @@ public class Result<T>
             Data = data
         };
     }
-    public static Result<T> ErrorResult(string? message = null)
+    public static Result<T> Error(string? message = null)
     {
         return new Result<T>
         {
@@ -25,7 +25,7 @@ public class Result<T>
             Message = message,
         };
     }
-    public static Result<T> ErrorResult(List<string>? errors = null)
+    public static Result<T> Error(List<string>? errors = null)
     {
         return new Result<T>
         {
@@ -33,7 +33,7 @@ public class Result<T>
             Errors = errors,
         };
     }
-    public static Result<T> ErrorResult()
+    public static Result<T> Error()
     {
         return new Result<T>
         {

@@ -22,10 +22,10 @@ public sealed class GetEmployeeByRowIdQueryHandler : IRequestHandler<GetEmployee
         var employee = await employeeReadRepository.GetByRowIdAsync(request.RowId, cancellationToken);
 
         if (employee is null)
-            return Result<EmployeeDto>.ErrorResult();
+            return Result<EmployeeDto>.Error();
 
         var dto = mapper.Map<EmployeeDto>(employee);
-        return Result<EmployeeDto>.SuccessResult(dto);
+        return Result<EmployeeDto>.Success(dto);
     }
 }
 

@@ -10,6 +10,7 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployeeDto>
     {
         RuleFor(x => x.FirstName)
             .NotEmpty().NotNull().WithMessage("First name required");
+        RuleFor(x => x.LastName).NotEmpty().NotNull().WithMessage("Last name required");
 
         RuleFor(x => x.NationalCode)
             .Length(10).WithMessage("National code must be 10 digits");

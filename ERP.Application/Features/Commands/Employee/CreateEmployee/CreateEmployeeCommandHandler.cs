@@ -23,7 +23,7 @@ namespace ERP.Application.Features.Commands.Employee.CreateEmployee;
 //    }
 //}
 
-public class    CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeRequest, Result<string>>
+public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeRequest, Result<string>>
 {
     private readonly IEmployeeWriteRepository employeeRepository;
 
@@ -35,16 +35,16 @@ public class    CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeReq
     {
         CreateEmployeeValidator validator = new CreateEmployeeValidator();
         var isValid = await validator.ValidateAsync(request.CreateEmployeeDto);
-        if(!isValid.IsValid == true)
+        if (!isValid.IsValid)
         {
-            return Result<string>.ErrorResult(isValid.Errors.Select(x=>x.ErrorMessage).ToList());
+            return Result<string>.Error(isValid.Errors.Select(x => x.ErrorMessage).ToList());
         }
         //TODO CancellationToken what it is ???
         var employee = new EmployeeFactory();
         //:TODO use mapper hear 
-        var newEmployee = employee.Create(request.CreateEmployeeDto.FirstName, request.CreateEmployeeDto.LastName, request.CreateEmployeeDto.NationalCode,request.CreateEmployeeDto.BirthDate, request.CreateEmployeeDto.EmployeePosition, request.CreateEmployeeDto.CompanyId,request.CreateEmployeeDto.DegreeLevel);
+        var newEmployee = employee.Create(request.CreateEmployeeDto.FirstName, request.CreateEmployeeDto.LastName, request.CreateEmployeeDto.NationalCode, request.CreateEmployeeDto.BirthDate, request.CreateEmployeeDto.EmployeePosition, request.CreateEmployeeDto.CompanyId, request.CreateEmployeeDto.DegreeLevel);
         await employeeRepository.CreateAsync(newEmployee);
-        return Result<string>.SuccessResult("Create OK");
+        return Result<string>.Success("Create OK");
     }
 }
 

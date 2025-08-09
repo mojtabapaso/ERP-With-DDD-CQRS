@@ -1,28 +1,41 @@
 ﻿using ERP.Domain.Entities;
-using ERP.Domain.Factories.EmployeeManagment;
 using ERP.Domain.Repository.EmployeeManagment;
-using ERP.Shared.Abstraction.Commmand;
-//using EmployeeEntity = ERP.Domain.Entities.Employee;
+using ERP.Shared.Common.ResultPattern;
+using MediatR;
+using EmployeeEntity = ERP.Domain.Entities.Employee;
+
 namespace ERP.Application.Features.Commands.Employee.UpdateEmployee;
 
-public class UpdateEmployeeCommandHandler : ICommandHandler<UpdateEmployeeCommand>
+public class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeRequest, Result<string>>
 {
     private readonly IEmployeeWriteRepository employeeRepository;
-    private readonly IEmployeeFactory employeeFactory;
 
-    public UpdateEmployeeCommandHandler(IEmployeeWriteRepository employeeRepository, IEmployeeFactory employeeFactory)
+    public UpdateEmployeeCommandHandler(IEmployeeWriteRepository employeeRepository)
     {
         this.employeeRepository = employeeRepository;
-        this.employeeFactory = employeeFactory;
     }
 
-    public async Task ExecuteAsync(UpdateEmployeeCommand command)
+    public async Task<Result<string>> Handle(UpdateEmployeeRequest request, CancellationToken cancellationToken)
     {
-        var employeeExist = await employeeRepository.ExistByIdAsync(command.id);
-        if (!employeeExist)
+        var dto = request.UpdateEmpoyeeDto;
+        var employee = await employeeRepository.GetByRowIdAsync(dto.RowId);
+        if (employee == null)
             throw new EmployeeNotFoundException();
-        var employeeFac = employeeFactory.Create( command.firstName, command.lastName, command.nationalCode, command.birthDateUtc, command.employeePosition, command.companyId, command.company,command.DegreeLevel);
-        await employeeRepository.UpdateAsync(employeeFac);
+
+        employee.Update(
+                dto.FirstName,
+                dto.LastName,
+                dto.NationalCode,
+                dto.BirthDate,
+                dto.EmployeePosition,
+                dto.CompanyId,
+                dto.DegreeLevel
+            );
+
+        // 3. Save updated entity
+        await employeeRepository.UpdateAsync(employee);
+
+        return Result<string>.Success("ok");
 
     }
 }

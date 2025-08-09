@@ -22,5 +22,10 @@ public abstract class BaseEntity : AggregateRoot<BaseId>
     protected bool _isDeleted;
     protected DateTime _createdAt;
     protected DateTime? _updatedAt;
+    public BaseId BaseId => _id;
+    public RowId RowId => _rowId;
+    public bool IsDeleted => _isDeleted;
+    public DateTime? CreatedAt => _createdAt;
+    public DateTime? UpdatedAt => _updatedAt;
 
 }

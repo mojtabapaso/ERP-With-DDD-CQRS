@@ -16,10 +16,10 @@ internal class BaseWriteConfiguration<TEntity> : IEntityTypeConfiguration<TEntit
 
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
-        var baseIdConverter = new ValueConverter<BaseId, int>(
-          baseId => baseId.Value,
-          value => new BaseId(value)
-      );
+      //  var baseIdConverter = new ValueConverter<BaseId, int>(
+      //    baseId => baseId.Value,
+      //    value => new BaseId(value)
+      //);
 
         builder.Property<BaseId>("_id")
                .HasField("_id")

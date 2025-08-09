@@ -2,7 +2,7 @@
 
 public class EmployeeNotFoundException : EmployeeManagmentException
 {
-    public EmployeeNotFoundException() : base("Employee null execption")
+    public EmployeeNotFoundException() : base("Employee not found.")
     {
     }
 }

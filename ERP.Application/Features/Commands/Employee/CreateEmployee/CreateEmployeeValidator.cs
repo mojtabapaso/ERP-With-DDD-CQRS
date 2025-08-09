@@ -13,7 +13,8 @@ public class CreateEmployeeValidator : AbstractValidator<CreateEmployeeDto>
         RuleFor(x => x.LastName).NotEmpty().NotNull().WithMessage("Last name required");
 
         RuleFor(x => x.NationalCode)
-            .Length(10).WithMessage("National code must be 10 digits");
+            .Length(10).WithMessage("National code must be exactly 10 characters.")
+            .Matches("^[0-9]*$").WithMessage("National code must contain only digits.");
 
         RuleFor(x => x.BirthDate)
             .LessThan(DateTime.UtcNow).WithMessage("Invalid birth date");

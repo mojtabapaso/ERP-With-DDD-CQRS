@@ -6,7 +6,7 @@ namespace ERP.Domain.Entities;
 
 public class EmployeeSalary : BaseEntity
 {
-    public EmployeeSalary() : base(default!)
+    public EmployeeSalary() : base()
     {
     }
     private Amount _amount;

@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using ERP.Infrastructure.Extensions;
 using ERP.Infrastructure.IocConfig;
 using ERP.Presentation.Middleware;
 using Serilog;
@@ -43,7 +44,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.ApplyDatabaseMigrations();
 app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
@@ -52,7 +53,7 @@ app.UseResponseCaching();
 
 app.UseRouting();
 
-app.UseCors("EnableCors");  // اگر نیاز به CORS داری، فعال کن
+app.UseCors("EnableCors");  
 
 app.UseAuthentication();
 app.UseAuthorization();

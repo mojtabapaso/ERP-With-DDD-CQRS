@@ -1,4 +1,5 @@
-﻿using ERP.Domain.Repository;
+﻿using ERP.Domain.Common;
+using ERP.Domain.Repository;
 using ERP.Domain.ValueObjects;
 using ERP.Infrastructure.Persistence;
 using ERP.Infrastructure.Persistence.Contaxt;
@@ -7,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ERP.Infrastructure.Generic;
 
 public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
-    where TEntity : class
+    where TEntity : BaseEntity
 {
     protected readonly WriteDbContext _context;
     protected readonly DbSet<TEntity> _dbSet;
@@ -17,7 +18,10 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
         _context = context;
         _dbSet = _context.Set<TEntity>();
     }
-
+    public async Task<TEntity> GetByRowIdAsync(RowId rowId)
+    {
+        return await _dbSet.FirstOrDefaultAsync(c => c.RowId == rowId);
+    }
     public async Task<bool> ExistByIdAsync(BaseId id)
     {
         return await _dbSet.AnyAsync(e => EF.Property<BaseId>(e, "Id") == id);
@@ -50,7 +54,7 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
         var entity = await _dbSet.FirstOrDefaultAsync(e => EF.Property<BaseId>(e, "Id") == id);
         if (entity != null)
         {
-            EF.Property<bool>(entity, "IsDeleted"); 
+            EF.Property<bool>(entity, "IsDeleted");
             typeof(TEntity).GetProperty("IsDeleted")?.SetValue(entity, true);
             await _context.SaveChangesAsync();
         }
@@ -82,5 +86,8 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
         await _context.SaveChangesAsync();
         return entity;
     }
+
+
+
 }
 

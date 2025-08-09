@@ -43,7 +43,7 @@ public class EmployeeControllerTests
             .ReturnsAsync(expectedResponse);
 
         // Act
-        var result = await _controller.CreateEmployee(inputDto);
+        var result = await _controller.Create(inputDto);
 
         // Assert
         var okResult = result as OkObjectResult;
@@ -77,7 +77,7 @@ public class EmployeeControllerTests
       .ReturnsAsync(Result<string>.Error("National code must be 10 digits"));
 
         // Act
-        var result = await _controller.CreateEmployee(invalidDto);
+        var result = await _controller.Create(invalidDto);
 
         // Assert
         result.Should().BeOfType<BadRequestObjectResult>();

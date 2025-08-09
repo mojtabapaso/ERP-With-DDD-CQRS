@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using ERP.Application.DTOs.EmployeeDTOs;
 using ERP.Application.Features.Commands.Employee.CreateEmployee;
+using ERP.Application.Features.Commands.Employee.UpdateEmployee;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,9 +19,19 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpPost("Employee")]
-    public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeDto createEmployee)
+    public async Task<IActionResult> Create([FromBody] CreateEmployeeDto createEmployee)
     {
         var res = await mediator.Send(new CreateEmployeeRequest() { CreateEmployeeDto = createEmployee });
+        if (!res.IsSuccess)
+        {
+            return BadRequest(res);
+        }
+        return Ok(res);
+    }
+    [HttpPatch("Employee")]
+    public async Task<IActionResult> Update([FromBody] UpdateEmpoyeeDto updateEmployee)
+    {
+        var res = await mediator.Send(new UpdateEmployeeRequest() { UpdateEmpoyeeDto = updateEmployee });
         if (!res.IsSuccess)
         {
             return BadRequest(res);

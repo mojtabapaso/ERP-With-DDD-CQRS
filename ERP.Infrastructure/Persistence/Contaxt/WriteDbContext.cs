@@ -33,6 +33,7 @@ public class WriteDbContext : IdentityDbContext<ApplicationUser, ApplicationRole
     // ERP Entities
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Company> Companies { get; set; }
+    public DbSet<EmployeeSalary> employeeSalaries { get; set; }
     //public DbSet<Department> Departments { get; set; }
     //public DbSet<Product> Products { get; set; }
     //public DbSet<Invoice> Invoices { get; set; }
@@ -44,6 +45,7 @@ public class WriteDbContext : IdentityDbContext<ApplicationUser, ApplicationRole
         base.OnModelCreating(builder);
         builder.ApplyConfiguration(new AuditLogConfiguration());
         builder.ApplyConfiguration(new EmployeeWriteConfiguration());
+        builder.ApplyConfiguration(new EmployeeSalaryWriteConfiguration());
         builder.ApplyConfiguration(new CompanyWriteConfiguration());
         builder.Ignore<BaseId>();
     }

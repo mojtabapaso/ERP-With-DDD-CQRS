@@ -1,61 +1,57 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Net;
-using System.Text.Json;
 
 namespace ERP.Presentation.Middleware;
 
 public class ExceptionHandlingMiddleware
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger<ExceptionHandlingMiddleware> _logger;
-    private readonly IHostEnvironment _env;
+    private readonly RequestDelegate next;
+    private readonly ILogger<ExceptionHandlingMiddleware> logger;
+    private readonly IHostEnvironment env;
 
     public ExceptionHandlingMiddleware(
         RequestDelegate next,
         ILogger<ExceptionHandlingMiddleware> logger,
         IHostEnvironment env)
     {
-        _next = next;
-        _logger = logger;
-        _env = env;
+        this.next = next;
+        this.logger = logger;
+        this.env = env;
     }
 
     public async Task Invoke(HttpContext context)
     {
         try
         {
-            await _next(context);
+            await next(context);
         }
         catch (EmployeeNotFoundException ex)
         {
-            _logger.LogWarning(ex, "Employee not found.");
+            logger.LogWarning(ex, ex.Message);
 
             var problem = new ProblemDetails
             {
-                Title = "Not Found",
-                Detail = "Employee not found.",
+                Title = HttpStatusCode.NotFound.ToString(),
+                Detail = ex.Message,
                 Status = (int)HttpStatusCode.NotFound,
-                Type = "https://httpstatuses.com/404",
                 Instance = context.Request.Path
             };
 
             context.Response.StatusCode = problem.Status.Value;
-            context.Response.ContentType = "application/problem+json";
+            //context.Response.ContentType = "application/problem+json";
             await context.Response.WriteAsJsonAsync(problem);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unhandled exception occurred while processing the request.");
+            logger.LogError(ex, "Unhandled exception occurred while processing the request.");
 
             var problem = new ProblemDetails
             {
                 Status = (int)HttpStatusCode.InternalServerError,
                 Instance = context.Request.Path,
-                Type = "https://httpstatuses.com/500"
             };
 
-            if (_env.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 problem.Title = ex.Message;
                 problem.Detail = ex.StackTrace;

@@ -54,8 +54,7 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
         var entity = await _dbSet.FirstOrDefaultAsync(e => EF.Property<BaseId>(e, "Id") == id);
         if (entity != null)
         {
-            EF.Property<bool>(entity, "IsDeleted");
-            typeof(TEntity).GetProperty("IsDeleted")?.SetValue(entity, true);
+            entity.Delete();
             await _context.SaveChangesAsync();
         }
     }
@@ -75,13 +74,14 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
         var entity = await _dbSet.FirstOrDefaultAsync(e => EF.Property<RowId>(e, "RowId") == rowId);
         if (entity != null)
         {
-            typeof(TEntity).GetProperty("IsDeleted")?.SetValue(entity, true);
+            entity.Delete();
             await _context.SaveChangesAsync();
         }
     }
 
     public async Task<TEntity> UpdateAsync(TEntity entity)
     {
+        entity.MarkAsUpdated();
         _dbSet.Update(entity);
         await _context.SaveChangesAsync();
         return entity;

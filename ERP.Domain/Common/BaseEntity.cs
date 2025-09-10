@@ -28,4 +28,8 @@ public abstract class BaseEntity : AggregateRoot<BaseId>
     public DateTime? CreatedAt => _createdAt;
     public DateTime? UpdatedAt => _updatedAt;
 
+    //Domain Activit
+    public void Delete() => _isDeleted = true;
+    public void MarkAsUpdated() => this._updatedAt = DateTime.UtcNow;
+
 }

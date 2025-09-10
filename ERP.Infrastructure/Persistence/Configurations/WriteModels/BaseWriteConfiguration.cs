@@ -35,7 +35,7 @@ internal class BaseWriteConfiguration<TEntity> : IEntityTypeConfiguration<TEntit
         builder.HasKey("_id");
 
         // _rowId property
-        builder.Property(typeof(RowId), "_rowId")
+        builder.Property(e => e.RowId)
                .HasField("_rowId")
                .UsePropertyAccessMode(PropertyAccessMode.Field)
                .HasConversion(rowIdConverter)

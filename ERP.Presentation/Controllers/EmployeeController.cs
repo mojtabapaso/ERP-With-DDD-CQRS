@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ERP.Presentation.Controllers;
 [ApiVersion("1.0")]
-[Route("api/v{version:apiVersion}/[controller]")]
+[Route("api/v{version:apiVersion}")]
 [ApiController]
 public class EmployeeController : ControllerBase
 {
@@ -32,6 +32,16 @@ public class EmployeeController : ControllerBase
     public async Task<IActionResult> Update([FromBody] UpdateEmpoyeeDto updateEmployee)
     {
         var res = await mediator.Send(new UpdateEmployeeRequest() { UpdateEmpoyeeDto = updateEmployee });
+        if (!res.IsSuccess)
+        {
+            return BadRequest(res);
+        }
+        return Ok(res);
+    }
+    [HttpDelete("Employee")]
+    public async Task<IActionResult> SoftDelete([FromBody] SoftDeleteEmployeeDto softDeleteEmployeeDto)
+    {
+        var res = await mediator.Send(new SoftDeleteEmployeeRequest() { RowId = softDeleteEmployeeDto .RowId});
         if (!res.IsSuccess)
         {
             return BadRequest(res);

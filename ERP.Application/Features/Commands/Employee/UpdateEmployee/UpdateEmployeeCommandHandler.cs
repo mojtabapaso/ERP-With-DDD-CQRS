@@ -1,8 +1,6 @@
-﻿using ERP.Domain.Entities;
-using ERP.Domain.Repository.EmployeeManagment;
+﻿using ERP.Domain.Repository.EmployeeManagment;
 using ERP.Shared.Common.ResultPattern;
 using MediatR;
-using EmployeeEntity = ERP.Domain.Entities.Employee;
 
 namespace ERP.Application.Features.Commands.Employee.UpdateEmployee;
 

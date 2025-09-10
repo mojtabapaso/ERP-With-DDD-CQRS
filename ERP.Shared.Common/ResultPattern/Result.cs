@@ -8,8 +8,9 @@ public class Result<T>
     public T? Data { get; set; }
 
 
-    public static Result<T> Success(T? data, string? message = null)
+    public static Result<T> Success(T? data , string? message = null)
     {
+        message ??= "OK";
         return new Result<T>
         {
             IsSuccess = true,
@@ -41,3 +42,4 @@ public class Result<T>
         };
     }
 }
+class Result : Result<string> { }

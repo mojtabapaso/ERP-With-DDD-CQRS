@@ -6,3 +6,8 @@ public interface IEmployeeWriteRepository : IGenericWriteRepository<Employee>
 {
 }
 
+
+public interface ICompanyWriteRepository : IGenericWriteRepository<Company>
+{
+
+}

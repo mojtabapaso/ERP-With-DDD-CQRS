@@ -2,7 +2,7 @@
 
 namespace ERP.Domain.Repository.EmployeeManagment;
 
-public interface IEmployeeReadRepository
-{
-    Task<Employee> GetByRowIdAsync(Guid guid, CancellationToken cancellation);
-}
+//public interface IEmployeeReadRepository
+//{
+//    Task<Employee> GetByRowIdAsync(Guid guid, CancellationToken cancellation);
+//}

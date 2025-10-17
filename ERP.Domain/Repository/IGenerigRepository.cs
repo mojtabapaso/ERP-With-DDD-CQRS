@@ -8,7 +8,7 @@ public interface IGenericWriteRepository<TEntity> where TEntity : BaseEntity
     Task<bool> ExistByIdAsync(BaseId id);
     Task<bool> ExistByRowIdAsync(RowId id);
     Task<TEntity> GetByRowIdAsync(RowId rowId);
-
+    Task<Guid> GetRowIdByIdAsync(BaseId Id);
     Task<TEntity> CreateAsync(TEntity entity);
     Task DeleteByIdAsync(BaseId id);
     Task SoftDeleteByIdAsync(BaseId id);

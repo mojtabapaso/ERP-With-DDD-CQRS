@@ -16,23 +16,29 @@ internal class BaseWriteConfiguration<TEntity> : IEntityTypeConfiguration<TEntit
 
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
-      //  var baseIdConverter = new ValueConverter<BaseId, int>(
-      //    baseId => baseId.Value,
-      //    value => new BaseId(value)
-      //);
+        //  var baseIdConverter = new ValueConverter<BaseId, int>(
+        //    baseId => baseId.Value,
+        //    value => new BaseId(value)
+        //);
 
-        builder.Property<BaseId>("_id")
+        builder.HasKey(x => x.Id);
+        builder
+            //.Property<BaseId>("_id")
+
+
+
+        .Property(x=>x.Id)
                .HasField("_id")
-               .HasConversion(baseIdConverter)
-               .UseIdentityColumn()
-               .ValueGeneratedOnAdd()
                .UsePropertyAccessMode(PropertyAccessMode.Field)
-               .HasColumnName("Id");
+               .HasConversion(baseIdConverter)
+               .HasColumnName("Id")
+               .UseIdentityColumn()
+               .ValueGeneratedOnAdd();
+        //builder.HasKey("_id");
 
 
 
 
-        builder.HasKey("_id");
 
         // _rowId property
         builder.Property(e => e.RowId)

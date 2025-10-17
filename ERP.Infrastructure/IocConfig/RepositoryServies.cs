@@ -16,7 +16,9 @@ public static class RepositoryServies
     public static IServiceCollection AddRepositoryServies(this IServiceCollection Service)
     {
         Service.AddScoped<IEmployeeWriteRepository, EmployeeWriteRepository>();
-        Service.AddScoped<IEmployeeReadRepository, EmployeeReadRepository>();
+        Service.AddScoped<ICompanyWriteRepository, CompanyWriteRepository>();
+
+        //Service.AddScoped<IEmployeeReadRepository, EmployeeReadRepository>();
 
         return Service;
     }

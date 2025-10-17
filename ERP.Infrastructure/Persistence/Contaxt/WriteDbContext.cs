@@ -32,7 +32,6 @@ public class WriteDbContext : IdentityDbContext<ApplicationUser, ApplicationRole
     //public DbSet<UserRefreshTokens> UserRefreshToken { get; set; }
     // ERP Entities
     public DbSet<Employee> Employees { get; set; }
-    public DbSet<Company> Companies { get; set; }
     public DbSet<EmployeeSalary> employeeSalaries { get; set; }
     //public DbSet<Department> Departments { get; set; }
     //public DbSet<Product> Products { get; set; }
@@ -40,6 +39,8 @@ public class WriteDbContext : IdentityDbContext<ApplicationUser, ApplicationRole
     //public DbSet<InvoiceItem> InvoiceItems { get; set; }
     //public DbSet<Customer> Customers { get; set; }
     public DbSet<Audit> AuditLogs { get; set; }
+    public DbSet<EntityOutbox> EntityOutboxes { get; set; }
+    public DbSet<Company> Companies { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

@@ -7,7 +7,7 @@ public class AuditEntry
 {
     public string EntityName { get; set; }
     public int UserId { get; set; }
-    public ActionTypeAuditLog ActionType { get; set; }
+    public ActionType ActionType { get; set; }
     public Dictionary<string, object> OldValues { get; } = new();
     public Dictionary<string, object> NewValues { get; } = new();
 }

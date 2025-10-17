@@ -41,9 +41,9 @@ public class AuditService : IAuditService
                 EntityName = entry.Entity.GetType().Name,
                 ActionType = entry.State switch
                 {
-                    EntityState.Added => ActionTypeAuditLog.INSERT,
-                    EntityState.Modified => ActionTypeAuditLog.UPDATE,
-                    EntityState.Deleted => ActionTypeAuditLog.DELETE,
+                    EntityState.Added => ActionType.INSERT,
+                    EntityState.Modified => ActionType.UPDATE,
+                    EntityState.Deleted => ActionType.DELETE,
                     _ => throw new NotSupportedException()
                 }
             };

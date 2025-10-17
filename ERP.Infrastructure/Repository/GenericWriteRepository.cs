@@ -1,8 +1,12 @@
 ﻿using ERP.Domain.Common;
 using ERP.Domain.Repository;
 using ERP.Domain.ValueObjects;
+using ERP.Infrastructure.IocConfig;
 using ERP.Infrastructure.Persistence;
 using ERP.Infrastructure.Persistence.Contaxt;
+using MassTransit;
+using MassTransit.Initializers;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace ERP.Infrastructure.Generic;
@@ -11,7 +15,15 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
     where TEntity : BaseEntity
 {
     protected readonly WriteDbContext _context;
+    private readonly IPublishEndpoint publish;
     protected readonly DbSet<TEntity> _dbSet;
+
+    public GenericWriteRepository(WriteDbContext context, IPublishEndpoint publish)
+    {
+        _context = context;
+        this.publish = publish;
+        _dbSet = _context.Set<TEntity>();
+    }
 
     public GenericWriteRepository(WriteDbContext context)
     {
@@ -36,6 +48,7 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
     {
         await _dbSet.AddAsync(entity);
         await _context.SaveChangesAsync();
+        //await _context.PublishEntityChangesAsync(publish);
         return entity;
     }
 
@@ -87,7 +100,24 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
         return entity;
     }
 
+    public async Task<Guid> GetRowIdByIdAsync(BaseId Id)
+    {
+        try
+        {
+            var rowId = await _dbSet
+         .Where(x => x.Id == Id)
+         .Select(x => x.RowId)
+         .FirstOrDefaultAsync();
 
+            return rowId;
 
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
+
+    }
 }
 

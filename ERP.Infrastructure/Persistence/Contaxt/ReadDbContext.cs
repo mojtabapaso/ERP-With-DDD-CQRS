@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ERP.Infrastructure.MongoDbConfig;
 using ERP.Infrastructure.Persistence.Models.EmployeeManagment;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
@@ -12,10 +13,10 @@ internal sealed class ReadDbContext
 
     public ReadDbContext(IConfiguration configuration)
     {
-        var client = new MongoClient(configuration["MongoDb:ConnectionString"]);
-        database = client.GetDatabase(configuration["MongoDb:Database"]);
+        var client = new MongoClient(configuration["ConnectionStrings:ConnectionRead"]);
+        database = client.GetDatabase(configuration["ConnectionStrings:ReadDatabaseName"]);
     }
 
-    // مثال: دسترسی به کالکشن‌ها
+    public IMongoCollection<CompanyAndItsEmployeeReadModel> CompanyAndItsUsersReports => database.GetCollection<CompanyAndItsEmployeeReadModel>(nameof(CompanyAndItsUsersReports));
     public IMongoCollection<EmployeeReadModel> Employees => database.GetCollection<EmployeeReadModel>("Employees");
 }

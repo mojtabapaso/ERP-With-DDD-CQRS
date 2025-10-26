@@ -1,6 +1,8 @@
 ﻿using ERP.Domain.Repository.EmployeeManagment;
+using ERP.Infrastructure.Extensions;
 using ERP.Infrastructure.Repository.EmployeeManagment;
 using Microsoft.Extensions.DependencyInjection;
+
 //using ERP.Infrastructure.Services;
 
 namespace ERP.Infrastructure.IocConfig;
@@ -15,10 +17,8 @@ public static class RepositoryServies
     /// </summary>
     public static IServiceCollection AddRepositoryServies(this IServiceCollection Service)
     {
-        Service.AddScoped<IEmployeeWriteRepository, EmployeeWriteRepository>();
-        Service.AddScoped<ICompanyWriteRepository, CompanyWriteRepository>();
-
-        //Service.AddScoped<IEmployeeReadRepository, EmployeeReadRepository>();
+        //Service.AddScoped<IEmployeeWriteRepository, EmployeeWriteRepository>();
+        //Service.AddScoped<ICompanyWriteRepository, CompanyWriteRepository>();
 
         return Service;
     }

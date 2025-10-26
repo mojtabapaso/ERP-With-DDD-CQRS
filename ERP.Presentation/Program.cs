@@ -10,7 +10,7 @@ var Services = builder.Services;
 Services.AddControllers();
 Services.AddEndpointsApiExplorer();
 Services.AddSwaggerGen();
-Services.AddRepositoryServies();
+Services.AddRepositoryServices();
 Services.AddResponseCaching();
 Services.AddMemoryCache();
 Services.AddAutoMapperServies();

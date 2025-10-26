@@ -20,6 +20,8 @@ public static class ServiceCollectionExtensions
             {
                 var attr = directInterfaces.GetCustomAttribute<AutoRegisterAttribute>();
                 services.Add(new ServiceDescriptor(directInterfaces, type, attr.Lifetime));
+                // debug way
+                //Console.WriteLine($"Registered Interface: {directInterfaces.FullName} -> Implementation: {type.FullName} (Lifetime: {attr.Lifetime})");
             }
         }
 

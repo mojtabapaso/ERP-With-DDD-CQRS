@@ -3,29 +3,25 @@ using ERP.Shared.Abstraction.Domain;
 
 namespace ERP.Domain.AggregateRoots;
 
-public abstract class AggregateRoot<TEntity>  : BaseEntity
+public abstract class AggregateRoot<TEntity> : BaseEntity
 {
-    //public T Id { get; protected set; }
-    //public int Version { get; protected set; }
-    //private bool _isINcremented;
-    //protected void IncrementedVersion()
-    //{
-    //    if (_isINcremented) return;
-
-    //    _isINcremented = true;
-    //    Version++;
-    //}
-    private List<IDomainEvent> _events = new();
-    public IEnumerable <IDomainEvent> Events => _events;
-    protected void RaiseEventEvent(IDomainEvent domainEvent )
+    private readonly List<IDomainEvent> _domainEvents = new();
+    
+    public IReadOnlyCollection<IDomainEvent> DomainEvents => 
+        _domainEvents.AsReadOnly();
+    
+    protected void AddDomainEvent(IDomainEvent domainEvent)
     {
-        _events.Add(domainEvent);
-
-        //if(_events.Any() && !_isINcremented)
-        //{
-        //    _isINcremented = true;
-        //    Version++;
-        //}
+        _domainEvents.Add(domainEvent);
+    }
+    
+    protected void RemoveDomainEvent(IDomainEvent domainEvent)
+    {
+        _domainEvents.Remove(domainEvent);
+    }
+    
+    public void ClearDomainEvents()
+    {
+        _domainEvents.Clear();
     }
 }
-

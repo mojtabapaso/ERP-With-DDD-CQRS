@@ -23,8 +23,8 @@ public class Company : BaseEntity
 
     private NameValueObject _name;
     private TaxCodeValueObject _taxCode;
-    private PhoneNumber _phoneNumber;
-    private Address _address;
+    private PhoneNumberValueObject _phoneNumber;
+    private AddressValueObject _address;
     private ICollection<Employee> _employees = new List<Employee>();
     public Company() : base()
     {
@@ -33,8 +33,8 @@ public class Company : BaseEntity
     ////==
     public NameValueObject Name => _name;
     public TaxCodeValueObject TaxCode => _taxCode;
-    public PhoneNumber PhoneNumber => _phoneNumber;
-    public Address Address => _address;
+    public PhoneNumberValueObject PhoneNumber => _phoneNumber;
+    public AddressValueObject Address => _address;
     public ICollection<Employee> Employees => _employees;
 
     //public void HireEmployee(Employee employee)

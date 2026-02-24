@@ -9,8 +9,9 @@ public class Customer : BaseEntity
     {
     }
 
-    public FullNameValueObject FullName { get; set; }
-    public PhoneNumberValueObject PhoneNumber { get; set; }
-    public EmailValueObject Email { get; set; }
-    public AddressValueObject Address { get; set; }
+    public FullNameValueObject FullName { get; private set; }
+    public PhoneNumberValueObject PhoneNumber { get; private set; }
+    public EmailValueObject Email { get; private set; }
+    public AddressValueObject Address { get; private set; }
+
 }

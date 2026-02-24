@@ -9,7 +9,7 @@ public class EmployeeSalary : BaseEntity
     public EmployeeSalary() : base()
     {
     }
-    private Amount _amount;
+    private AmountValueObject _amount;
     // Employee reference
     private BaseId _employeeId;
     // Salary period (month/year)
@@ -17,13 +17,13 @@ public class EmployeeSalary : BaseEntity
     private DateTime _periodEnd;
 
     // Salary components
-    private Amount _basicSalary;
-    private Amount _allowances;
-    private Amount _deductions;
-    private Amount _bonuses;
+    private AmountValueObject _basicSalary;
+    private AmountValueObject _allowances;
+    private AmountValueObject _deductions;
+    private AmountValueObject _bonuses;
 
     // Tax information
-    private Amount _taxAmount;
+    private AmountValueObject _taxAmount;
 
     // Payment status
     private SalaryPaymentStatus _paymentStatus;
@@ -32,25 +32,25 @@ public class EmployeeSalary : BaseEntity
     private DateTime? _paymentDate;
 
     // Net salary (calculated)
-    public Amount NetSalary
+    public AmountValueObject NetSalary
     {
         get { return _basicSalary + _allowances + _bonuses - _deductions - _taxAmount; }
     }
 
     // Methods to update salary components
-    public void UpdateBasicSalary(Amount newAmount)
+    public void UpdateBasicSalary(AmountValueObject newAmount)
     {
         _basicSalary = newAmount;
         UpdateModifiedDate();
     }
 
-    public void AddAllowance(Amount allowance)
+    public void AddAllowance(AmountValueObject allowance)
     {
         _allowances += allowance;
         UpdateModifiedDate();
     }
 
-    public void AddDeduction(Amount deduction)
+    public void AddDeduction(AmountValueObject deduction)
     {
         _deductions += deduction;
         UpdateModifiedDate();

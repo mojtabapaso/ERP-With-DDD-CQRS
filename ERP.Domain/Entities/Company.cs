@@ -1,6 +1,5 @@
 ﻿using ERP.Domain.Common;
 using ERP.Domain.ValueObjects;
-using ERP.Domain.ValueObjects.Base;
 
 namespace ERP.Domain.Entities;
 
@@ -22,8 +21,8 @@ public class Company : BaseEntity
 {
 
 
-    private Name _name;
-    private TaxCode _taxCode;
+    private NameValueObject _name;
+    private TaxCodeValueObject _taxCode;
     private PhoneNumber _phoneNumber;
     private Address _address;
     private ICollection<Employee> _employees = new List<Employee>();
@@ -32,8 +31,8 @@ public class Company : BaseEntity
 
     }
     ////==
-    public Name Name => _name;
-    public TaxCode TaxCode => _taxCode;
+    public NameValueObject Name => _name;
+    public TaxCodeValueObject TaxCode => _taxCode;
     public PhoneNumber PhoneNumber => _phoneNumber;
     public Address Address => _address;
     public ICollection<Employee> Employees => _employees;
@@ -59,4 +58,4 @@ public class Company : BaseEntity
     //    IncrementedVersion();
     //}
 
-}   
+}

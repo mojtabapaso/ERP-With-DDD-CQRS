@@ -9,8 +9,23 @@ public class Product :BaseEntity
     {
     }
 
-    public string Name { get; set; } = default!;
-    public string SKU { get; set; }
-    public decimal Price { get; set; }
-    public int QuantityInStock { get; set; }
-}
+    public NameValueObject Name { get; private set; } = default!;
+    public SKUValueObject SKU { get; private set; } = default!;
+    public MoneyValueObject Price { get; private set; } = default!;
+    public AmountValueObject QuantityInStock { get; private set; } = default!;
+
+
+    public void IncreaseStock(AmountValueObject amount)
+    {
+        QuantityInStock += amount;
+    }
+
+    public void ReduceStock(AmountValueObject amount)
+    {
+        QuantityInStock -= amount;
+    }
+    public void ChangeSKU(SKUValueObject newSku)
+    {
+        SKU = newSku;
+    }
+} 

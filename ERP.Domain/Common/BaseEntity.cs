@@ -11,7 +11,7 @@ public abstract class BaseEntity
     }
     public BaseEntity(BaseId id)
     {
-        _rowId = new RowId(Guid.NewGuid());
+        _rowId = new RowIdValueObject(Guid.NewGuid());
         _isDeleted = false;
         _createdAt = DateTime.UtcNow;
         _updatedAt = null;

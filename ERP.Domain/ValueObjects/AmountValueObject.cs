@@ -2,11 +2,11 @@
 
 namespace ERP.Domain.ValueObjects;
 
-public sealed record Amount
+public sealed record AmountValueObject
 {
     public int Value { get; }
 
-    public Amount(int value)
+    public AmountValueObject(int value)
     {
         if (value < 0)
             throw new AmountNegativeException();
@@ -21,42 +21,42 @@ public sealed record Amount
     public const int MaxAmount = 1_000_000_000; // 1 میلیارد
 
     // عملگرهای ضمنی برای راحتی استفاده
-    public static implicit operator Amount(int value) => new Amount(value);
-    public static implicit operator int(Amount amount) => amount.Value;
+    public static implicit operator AmountValueObject(int value) => new AmountValueObject(value);
+    public static implicit operator int(AmountValueObject amount) => amount.Value;
 
     // عملگرهای ریاضی امن
-    public static Amount operator +(Amount a1, Amount a2)
-        => new Amount(a1.Value + a2.Value);
+    public static AmountValueObject operator +(AmountValueObject a1, AmountValueObject a2)
+        => new AmountValueObject(a1.Value + a2.Value);
 
-    public static Amount operator -(Amount a1, Amount a2)
+    public static AmountValueObject operator -(AmountValueObject a1, AmountValueObject a2)
     {
         if (a1.Value < a2.Value)
             throw new InvalidOperationException("مقدار منفی مجاز نیست");
-        return new Amount(a1.Value - a2.Value);
+        return new AmountValueObject(a1.Value - a2.Value);
     }
 
-    public static Amount operator *(Amount a, int multiplier)
-        => new Amount(a.Value * multiplier);
+    public static AmountValueObject operator *(AmountValueObject a, int multiplier)
+        => new AmountValueObject(a.Value * multiplier);
 
-    public static Amount operator /(Amount a, int divisor)
+    public static AmountValueObject operator /(AmountValueObject a, int divisor)
     {
         if (divisor <= 0)
             throw new DivideByZeroException();
-        return new Amount(a.Value / divisor);
+        return new AmountValueObject(a.Value / divisor);
     }
 
     // مقایسه‌ها
-    public bool IsGreaterThan(Amount other) => Value > other.Value;
-    public bool IsLessThan(Amount other) => Value < other.Value;
+    public bool IsGreaterThan(AmountValueObject other) => Value > other.Value;
+    public bool IsLessThan(AmountValueObject other) => Value < other.Value;
     public bool IsZero() => Value == 0;
     public bool IsPositive() => Value > 0;
 
     // برای اعتبارسنجی‌های خاص‌تر
-    public static bool TryCreate(int value, out Amount? amount)
+    public static bool TryCreate(int value, out AmountValueObject? amount)
     {
         if (value >= 0 && value <= MaxAmount)
         {
-            amount = new Amount(value);
+            amount = new AmountValueObject(value);
             return true;
         }
 

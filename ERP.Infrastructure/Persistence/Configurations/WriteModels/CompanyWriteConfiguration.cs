@@ -8,12 +8,12 @@ namespace ERP.Infrastructure.Persistence.Configurations.WriteModels;
 
 internal sealed  class CompanyWriteConfiguration : BaseWriteConfiguration<Company>
 {
-    ValueConverter nameConverter = new ValueConverter<Name, string>(c => c.Value, c => new Name(c));
+    ValueConverter nameConverter = new ValueConverter<NameValueObject, string>(c => c.Value, c => new NameValueObject(c));
     public override void Configure(EntityTypeBuilder<Company> builder)
     {
         base.Configure(builder);
         builder.ToTable("Company", "api");
-        builder.Property(typeof(Name), "_name").HasConversion(nameConverter).HasColumnName("Name").HasColumnType("NVARCHAR(250)");
+        builder.Property(typeof(NameValueObject), "_name").HasConversion(nameConverter).HasColumnName("Name").HasColumnType("NVARCHAR(250)");
     }
 }
 

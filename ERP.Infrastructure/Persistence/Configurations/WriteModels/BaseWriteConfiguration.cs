@@ -11,8 +11,8 @@ internal class BaseWriteConfiguration<TEntity> : IEntityTypeConfiguration<TEntit
     protected readonly ValueConverter<BaseId, int> baseIdConverter =
         new(a => a.Value, a => new BaseId(a));
 
-    protected readonly ValueConverter<RowId, Guid> rowIdConverter =
-        new(a => a.Value, a => new RowId(a));
+    protected readonly ValueConverter<RowIdValueObject, Guid> rowIdConverter =
+        new(a => a.Value, a => new RowIdValueObject(a));
 
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {

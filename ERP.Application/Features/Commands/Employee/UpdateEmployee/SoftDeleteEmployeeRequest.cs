@@ -5,6 +5,6 @@ namespace ERP.Application.Features.Commands.Employee.UpdateEmployee;
 
 public class SoftDeleteEmployeeRequest : IRequest<Result<string>>
 {
-    public RowId RowId { get; set; }
+    public RowIdValueObject RowId { get; set; }
 
 }

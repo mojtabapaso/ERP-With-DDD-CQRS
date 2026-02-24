@@ -31,7 +31,7 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
         _context = context;
         _dbSet = _context.Set<TEntity>();
     }
-    public async Task<TEntity> GetByRowIdAsync(RowId rowId)
+    public async Task<TEntity> GetByRowIdAsync(RowIdValueObject rowId)
     {
         return await _dbSet.FirstOrDefaultAsync(c => c.RowId == rowId.Value);
     }
@@ -40,9 +40,9 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
         return await _dbSet.AnyAsync(e => EF.Property<BaseId>(e, "Id") == id);
     }
 
-    public async Task<bool> ExistByRowIdAsync(RowId id)
+    public async Task<bool> ExistByRowIdAsync(RowIdValueObject id)
     {
-        return await _dbSet.AnyAsync(e => EF.Property<RowId>(e, "RowId") == id);
+        return await _dbSet.AnyAsync(e => EF.Property<RowIdValueObject>(e, "RowId") == id);
     }
 
     public async Task<TEntity> CreateAsync(TEntity entity)
@@ -75,9 +75,9 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
         }
     }
 
-    public async Task DeleteByRowIdAsync(RowId rowId)
+    public async Task DeleteByRowIdAsync(RowIdValueObject rowId)
     {
-        var entity = await _dbSet.FirstOrDefaultAsync(e => EF.Property<RowId>(e, "RowId") == rowId);
+        var entity = await _dbSet.FirstOrDefaultAsync(e => EF.Property<RowIdValueObject>(e, "RowId") == rowId);
         if (entity != null)
         {
             _dbSet.Remove(entity);
@@ -85,9 +85,9 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
         }
     }
 
-    public async Task SoftDeleteByRowIdAsync(RowId rowId)
+    public async Task SoftDeleteByRowIdAsync(RowIdValueObject rowId)
     {
-        var entity = await _dbSet.FirstOrDefaultAsync(e => EF.Property<RowId>(e, "RowId") == rowId);
+        var entity = await _dbSet.FirstOrDefaultAsync(e => EF.Property<RowIdValueObject>(e, "RowId") == rowId);
         if (entity != null)
         {
             entity.Delete();

@@ -11,14 +11,14 @@ internal sealed class EmployeeSalaryWriteConfiguration : BaseWriteConfiguration<
 {
     ValueConverter idConverter = new ValueConverter<BaseId, int>(id => id.Value, id => new BaseId(id));
 
-    ValueConverter amountConverter = new ValueConverter<Amount, int>(a => a.Value, a => new Amount(a));
+    ValueConverter amountConverter = new ValueConverter<AmountValueObject, int>(a => a.Value, a => new AmountValueObject(a));
     public override void Configure(EntityTypeBuilder<EmployeeSalary> builder)
     {
         base.Configure(builder);
 
         builder.ToTable("EmployeeSalary", "api");
 
-        builder.Property(typeof(Amount), "_amount")
+        builder.Property(typeof(AmountValueObject), "_amount")
             .HasConversion(amountConverter)
             .HasColumnName("Amount");
 
@@ -32,11 +32,11 @@ internal sealed class EmployeeSalaryWriteConfiguration : BaseWriteConfiguration<
         builder.Property(typeof(DateTime), "_periodEnd")
             .HasColumnName("PeriodEnd");
 
-        builder.Property(typeof(Amount), "_basicSalary")
+        builder.Property(typeof(AmountValueObject), "_basicSalary")
             .HasConversion(amountConverter)
             .HasColumnName("BasicSalary"); 
 
-        builder.Property(typeof(Amount), "_taxAmount")
+        builder.Property(typeof(AmountValueObject), "_taxAmount")
             .HasConversion(amountConverter)
             .HasColumnName("TaxAmount");
 

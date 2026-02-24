@@ -2,11 +2,11 @@
 
 namespace ERP.Domain.ValueObjects;
 
-public record Money
+public record MoneyValueObject
 {
     public decimal Value { get; }
 
-    public Money(decimal value)
+    public MoneyValueObject(decimal value)
     {
         if (value < 0)
             throw new InvalidMoneyValueException("Money amount cannot be negative.");
@@ -14,6 +14,6 @@ public record Money
         Value = value;
     }
 
-    public static implicit operator Money(decimal value) => new Money(value);
-    public static implicit operator decimal(Money money) => money.Value;
+    public static implicit operator MoneyValueObject(decimal value) => new MoneyValueObject(value);
+    public static implicit operator decimal(MoneyValueObject money) => money.Value;
 }

@@ -28,11 +28,16 @@ Services.AddApiVersioning(options =>
     options.DefaultApiVersion = new ApiVersion(1, 0);
     options.ReportApiVersions = true;
 });
-
+builder.Services.AddLogging(cfg =>
+{
+    cfg.AddConsole();
+});
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.FromLogContext()
     .CreateLogger();
+
+
 
 builder.Host.UseSerilog();
 

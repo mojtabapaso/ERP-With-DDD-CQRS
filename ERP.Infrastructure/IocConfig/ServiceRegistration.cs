@@ -1,4 +1,5 @@
 ﻿using ERP.Application.Configurations;
+using ERP.Application.Message;
 using ERP.Infrastructure.Message;
 using ERP.Infrastructure.Persistence.Contaxt;
 using MassTransit;
@@ -6,7 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+
 
 namespace ERP.Infrastructure.IocConfig;
 
@@ -41,25 +46,18 @@ public static class ServiceRegistration
         //        cfg.Host("rabbitmq://localhost");
         //    });
         //});
-        var mongoConnectionString = "mongodb://localhost:27017";
-        var mongoDatabaseName = "ERP";
-
-        // MongoClient
-        var mongoClient = new MongoClient(mongoConnectionString);
-
-        // IMongoDatabase instance
-        var mongoDatabase = mongoClient.GetDatabase(mongoDatabaseName);
-
-        // اضافه کردن به DI container
+        //BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+        BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+        var mongoClient = new MongoClient("mongodb://localhost:27017");
+        var mongoDatabase = mongoClient.GetDatabase("ERP");
         services.AddSingleton(mongoDatabase);
-
+ 
         services.AddMassTransit(x =>
         {
             // Consumers
             x.AddConsumer<EmployeeCreatedConsumer>();
             x.AddConsumer<EmployeeUpdatedConsumer>();
             x.AddConsumer<EmployeeDeletedConsumer>();
-
             // Transport
             x.UsingRabbitMq((context, cfg) =>
             {

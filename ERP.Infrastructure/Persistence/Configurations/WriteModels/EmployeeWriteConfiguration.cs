@@ -31,7 +31,9 @@ internal sealed class EmployeeWriteConfiguration : BaseWriteConfiguration<Employ
         var birthDateConverter = new ValueConverter<BirthDate, DateTime>(
             bd => bd.Value,
             dt => new BirthDate(dt));
-
+        builder.HasOne(e => e.Company)
+       .WithMany(c => c.Employees)
+       .HasForeignKey("_companyId");
 
         builder.Property(typeof(FirstName), "_firstName")
             .HasConversion(firstNameConverter)

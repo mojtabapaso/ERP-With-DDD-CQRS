@@ -1,4 +1,5 @@
-﻿using ERP.Domain.Common;
+﻿using ERP.Domain.AggregateRoots;
+using ERP.Domain.Common;
 using ERP.Domain.DomainEvents;
 using ERP.Domain.Enums;
 using ERP.Domain.ValueObjects;
@@ -7,7 +8,7 @@ using System.ComponentModel.Design;
 
 namespace ERP.Domain.Entities;
 
-public class Employee : BaseEntity
+public class Employee : AggregateRoot<Employee>
 {
     // ───── Backing Fields ─────
     private FirstName _firstName;
@@ -27,26 +28,44 @@ public class Employee : BaseEntity
     public BirthDate BirthDateUtc => _birthDateUtc;
     public EmployeePosition EmployeePosition => _employeePosition;
     public int CompanyId => _companyId;
-    public Company Company => _company;
+    public Company? Company => _company;
     public IReadOnlyCollection<EmployeeSalary> EmployeeSalaries => _employeeSalary;
     public DegreeLevel? DegreeLevel => _degreeLevel;
-    private Employee() : base() { }
+    public Employee() : base() { }
 
     //public Employee(BaseId id) : base(id) { }
-    public Employee(FirstName firstName, LastName lastName, NationalCode nationalCode, BirthDate birthDateUtc, EmployeePosition employeePosition, int companyId, Company company, DegreeLevel? degreeLevel) : base()
-    {
 
-        _firstName = firstName;
-        _lastName = lastName;
-        _nationalCode = nationalCode;
-        _birthDateUtc = birthDateUtc;
-        _employeePosition = employeePosition;
-        _companyId = companyId;
-        _company = company;
-        //_employeeSalary = employeeSalary;
-        _degreeLevel = degreeLevel;
-        //RaiseEventEvent(new NewEmployeeCreated(this));
-        //CreateEmployee() 
+    //private protected Employee(FirstName firstName, LastName lastName, NationalCode nationalCode, BirthDate birthDateUtc, EmployeePosition employeePosition, int companyId, Company company, DegreeLevel? degreeLevel) : base()
+    //{
+
+    //    _firstName = firstName;
+    //    _lastName = lastName;
+    //    _nationalCode = nationalCode;
+    //    _birthDateUtc = birthDateUtc;
+    //    _employeePosition = employeePosition;
+    //    _companyId = companyId;
+    //    _company = company;
+    //    //_employeeSalary = employeeSalary;
+    //    _degreeLevel = degreeLevel;
+    //    //CreateEmployee() 
+    //}
+    private Employee(FirstName firstName, LastName lastName, NationalCode nationalCode, BirthDate birthDateUtc, EmployeePosition employeePosition, int companyId, DegreeLevel? degreeLevel)
+    {
+        _firstName = firstName; _lastName = lastName; _nationalCode = nationalCode; _birthDateUtc = birthDateUtc; _employeePosition = employeePosition; _companyId = companyId; _degreeLevel = degreeLevel;
+    }
+    public Employee Create(FirstName firstName, LastName lastName, NationalCode nationalCode, BirthDate birthDateUtc, EmployeePosition employeePosition, int companyId, DegreeLevel degreeLevel)
+    {
+        var employee = new Employee(
+            firstName,
+            lastName,
+            nationalCode,
+            birthDateUtc,
+            employeePosition,
+            companyId,
+        degreeLevel
+            );
+        RaiseEventEvent(new NewEmployeeCreated(employee.RowId, employee.FirstName, employee.LastName, employee.CompanyId));
+        return employee;
     }
     public void Update(FirstName firstName,
         LastName lastName,

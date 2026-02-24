@@ -1,7 +1,6 @@
-﻿using ERP.Application.DTOs.EmployeeDTOs;
-using ERP.Application.Features.Employees.Commands.CreateEmployee;
+﻿using ERP.Application.Features.Employees.Commands.CreateEmployee;
 using ERP.Application.Message;
-using ERP.Domain.Factories.EmployeeManagment;
+using ERP.Domain.Repository;
 using ERP.Domain.Repository.EmployeeManagment;
 using ERP.Shared.Common.ResultPattern;
 using MassTransit;
@@ -16,12 +15,14 @@ public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeReques
     private readonly IEmployeeWriteRepository employeeRepository;
     private readonly ICompanyWriteRepository companyRepository;
     private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IOutboxEventDispatcher outboxEventDispatcher;
 
-    public CreateEmployeeCommandHandler(IEmployeeWriteRepository employeeRepository,ICompanyWriteRepository companyRepository, IPublishEndpoint publishEndpoint)
+    public CreateEmployeeCommandHandler(IEmployeeWriteRepository employeeRepository, ICompanyWriteRepository companyRepository, IPublishEndpoint publishEndpoint, IOutboxEventDispatcher outboxEventDispatcher)
     {
         this.employeeRepository = employeeRepository;
         this.companyRepository = companyRepository;
         _publishEndpoint = publishEndpoint;
+        this.outboxEventDispatcher = outboxEventDispatcher;
     }
 
     public async Task<Result<string>> Handle(CreateEmployeeRequest request, CancellationToken cancellationToken)
@@ -33,17 +34,18 @@ public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeReques
             return Result<string>.Error(isValid.Errors.Select(x => x.ErrorMessage).ToList());
         }
         //TODO CancellationToken what it is ???
-        var employee = new EmployeeFactory();
+        var employee = new ERP.Domain.Entities.Employee();
         //:TODO use mapper hear 
         var newEmployee = employee.Create(request.CreateEmployeeDto.FirstName, request.CreateEmployeeDto.LastName, request.CreateEmployeeDto.NationalCode, request.CreateEmployeeDto.BirthDate, request.CreateEmployeeDto.EmployeePosition, request.CreateEmployeeDto.CompanyId, request.CreateEmployeeDto.DegreeLevel);
         await employeeRepository.CreateAsync(newEmployee);
 
         var companyRowId = await companyRepository.GetRowIdByIdAsync(newEmployee.CompanyId);
 
+        // send  message in mass transit into rabbitmq
         await _publishEndpoint.Publish(new EmployeeCreated
         {
-            EmployeeRowId = newEmployee.RowId.Value,
-            //--EmployeeId = newEmployee.Id.Value,
+            EmployeeRowId = newEmployee.RowId,
+            EmployeeId = newEmployee.Id,
             FirstName = newEmployee.FirstName.Value,
             LastName = newEmployee.LastName.Value,
             NationalCode = newEmployee.NationalCode.Value,

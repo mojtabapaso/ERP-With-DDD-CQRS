@@ -1,4 +1,5 @@
 ﻿using ERP.Domain.Common;
+using ERP.Domain.DomainEvents;
 using ERP.Domain.Repository;
 using ERP.Domain.ValueObjects;
 using ERP.Infrastructure.IocConfig;
@@ -32,7 +33,7 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
     }
     public async Task<TEntity> GetByRowIdAsync(RowId rowId)
     {
-        return await _dbSet.FirstOrDefaultAsync(c => c.RowId == rowId);
+        return await _dbSet.FirstOrDefaultAsync(c => c.RowId == rowId.Value);
     }
     public async Task<bool> ExistByIdAsync(BaseId id)
     {
@@ -49,6 +50,8 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
         await _dbSet.AddAsync(entity);
         await _context.SaveChangesAsync();
         //await _context.PublishEntityChangesAsync(publish);
+        //_context.AddDomainEvent(new EntityCreatedEvent<TEntity>(entity));
+        
         return entity;
     }
 

@@ -6,7 +6,7 @@ namespace ERP.Infrastructure.MongoDbConfig;
 
 public class EmployeeReadModel
 {
-    public Guid Id { get; set; }           
+    public Guid EmployeeRowId { get; set; }
     public string Name { get; set; }        
     public string NationalCode { get; set; }  
     public DateTime BirthDateUtc { get; set; }

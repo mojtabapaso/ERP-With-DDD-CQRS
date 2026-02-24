@@ -29,8 +29,8 @@ internal class BaseWriteConfiguration<TEntity> : IEntityTypeConfiguration<TEntit
 
         .Property(x=>x.Id)
                .HasField("_id")
+               //.HasConversion(baseIdConverter)
                .UsePropertyAccessMode(PropertyAccessMode.Field)
-               .HasConversion(baseIdConverter)
                .HasColumnName("Id")
                .UseIdentityColumn()
                .ValueGeneratedOnAdd();
@@ -44,7 +44,7 @@ internal class BaseWriteConfiguration<TEntity> : IEntityTypeConfiguration<TEntit
         builder.Property(e => e.RowId)
                .HasField("_rowId")
                .UsePropertyAccessMode(PropertyAccessMode.Field)
-               .HasConversion(rowIdConverter)
+               //.HasConversion(rowIdConverter)
                .HasColumnName("RowId")
                .HasDefaultValueSql("NEWID()");
 

@@ -1,9 +1,9 @@
-﻿using ERP.Domain.ValueObjects;
-using ERP.Shared.Abstraction.Domain;
+﻿using ERP.Domain.AggregateRoots;
+using ERP.Domain.ValueObjects;
 
 namespace ERP.Domain.Common;
 
-public abstract class BaseEntity : AggregateRoot<BaseId>
+public abstract class BaseEntity 
 {
     public BaseEntity()
     {
@@ -15,15 +15,17 @@ public abstract class BaseEntity : AggregateRoot<BaseId>
         _isDeleted = false;
         _createdAt = DateTime.UtcNow;
         _updatedAt = null;
-        Id = id;
+        _id = id;
     }
-    protected BaseId _id;
-    protected RowId _rowId;
+    protected int _id;
+    protected Guid _rowId;
     protected bool _isDeleted;
     protected DateTime _createdAt;
     protected DateTime? _updatedAt;
-    public BaseId BaseId => _id;
-    public RowId RowId => _rowId;
+    //public BaseId BaseId => _id;
+    public int  Id => _id;
+    public Guid RowId => _rowId;
+    //public RowId RowId => _rowId;
     public bool IsDeleted => _isDeleted;
     public DateTime? CreatedAt => _createdAt;
     public DateTime? UpdatedAt => _updatedAt;

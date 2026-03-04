@@ -1,6 +1,8 @@
 ﻿using Asp.Versioning;
 using ERP.Application.DTOs.EmployeeDTOs;
 using ERP.Application.Features.Commands.Employee.CreateEmployee;
+using ERP.Application.Features.Commands.Employee.HireEmployee;
+using ERP.Application.Features.Commands.Employee.SoftDelete;
 using ERP.Application.Features.Commands.Employee.UpdateEmployee;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -48,4 +50,20 @@ public class EmployeeController : ControllerBase
         }
         return Ok(res);
     }
+
+    /// new API With better arc base on REAL DDD ARCH
+    /// 
+    [HttpPost("Hire")]
+    public async Task<IActionResult> HireEmploee([FromBody] HireEmployeeDto hireEmployeeDto)
+    {
+        var res = await mediator.Send(new HireEmployeeRequest() { HireEmpoyeeDto = hireEmployeeDto });
+        if (!res.IsSuccess)
+        {
+            return BadRequest(res);
+        }
+        return Ok(res);
+    }
+        
+
+
 }

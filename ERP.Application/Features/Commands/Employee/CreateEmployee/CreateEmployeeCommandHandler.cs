@@ -33,16 +33,15 @@ public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeReques
         {
             return Result<string>.Error(isValid.Errors.Select(x => x.ErrorMessage).ToList());
         }
-        //TODO CancellationToken what it is ???
         var employee = new ERP.Domain.Entities.Employee();
         //:TODO use mapper hear 
         var newEmployee = employee.Create(request.CreateEmployeeDto.FirstName, request.CreateEmployeeDto.LastName, request.CreateEmployeeDto.NationalCode, request.CreateEmployeeDto.BirthDate, request.CreateEmployeeDto.EmployeePosition, request.CreateEmployeeDto.CompanyId, request.CreateEmployeeDto.DegreeLevel);
         await employeeRepository.CreateAsync(newEmployee);
 
+        // merge with create Employee for better perfomance
         var companyRowId = await companyRepository.GetRowIdByIdAsync(newEmployee.CompanyId);
-
         // send  message in mass transit into rabbitmq
-        await _publishEndpoint.Publish(new EmployeeCreated
+        await _publishEndpoint.Publish(new EmployeeCreatedMessage
         {
             EmployeeRowId = newEmployee.RowId,
             EmployeeId = newEmployee.Id,

@@ -10,7 +10,6 @@
   <ItemGroup>
     <Folder Include="Entities\Employee\" />
     <Folder Include="AggregateRoots\" />
-    <Folder Include="Events\" />
     <Folder Include="Exceptions\AuthenticationManagmentExceptions\" />
     <Folder Include="Specifications\" />
   </ItemGroup>

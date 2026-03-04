@@ -9,7 +9,7 @@ public interface IGenericWriteRepository<TEntity> where TEntity : BaseEntity
     Task<bool> ExistByRowIdAsync(RowIdValueObject id);
     Task<TEntity> GetByRowIdAsync(RowIdValueObject rowId);
     Task<Guid> GetRowIdByIdAsync(BaseId Id);
-    Task<TEntity> CreateAsync(TEntity entity);
+    Task<TEntity> CreateAsync(TEntity entity);// we need a two create one like this when create send it back ||| Two just create and say it's success or fail
     Task DeleteByIdAsync(BaseId id);
     Task SoftDeleteByIdAsync(BaseId id);
     Task DeleteByRowIdAsync(RowIdValueObject rowId);

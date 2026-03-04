@@ -16,51 +16,29 @@ internal class BaseWriteConfiguration<TEntity> : IEntityTypeConfiguration<TEntit
 
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
-        //  var baseIdConverter = new ValueConverter<BaseId, int>(
-        //    baseId => baseId.Value,
-        //    value => new BaseId(value)
-        //);
-
         builder.HasKey(x => x.Id);
-        builder
-            //.Property<BaseId>("_id")
-
-
-
-        .Property(x=>x.Id)
+        builder.Property(x=>x.Id)
                .HasField("_id")
-               //.HasConversion(baseIdConverter)
                .UsePropertyAccessMode(PropertyAccessMode.Field)
                .HasColumnName("Id")
                .UseIdentityColumn()
                .ValueGeneratedOnAdd();
-        //builder.HasKey("_id");
-
-
-
-
-
         // _rowId property
         builder.Property(e => e.RowId)
                .HasField("_rowId")
                .UsePropertyAccessMode(PropertyAccessMode.Field)
-               //.HasConversion(rowIdConverter)
                .HasColumnName("RowId")
                .HasDefaultValueSql("NEWID()");
-
-
         // _isDeleted property
         builder.Property(typeof(bool), "_isDeleted")
                .HasField("_isDeleted")
                .UsePropertyAccessMode(PropertyAccessMode.Field)
                .HasColumnName("IsDeleted");
-
         // _createdAt property
         builder.Property(typeof(DateTime), "_createdAt")
                .HasField("_createdAt")
                .UsePropertyAccessMode(PropertyAccessMode.Field)
                .HasColumnName("CreatedAt");
-
         // _updatedAt property
         builder.Property(typeof(DateTime?), "_updatedAt")
                .HasField("_updatedAt")

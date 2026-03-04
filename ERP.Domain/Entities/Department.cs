@@ -9,7 +9,7 @@ public class Department : BaseEntity
     {
     }
 
-    public string Name { get; set; } = default!;
-    public string Description { get; set; }
-    public ICollection<Employee> Employees { get; set; } = new List<Employee>();
+    public string Name { get; private set; } = default!;
+    public string Description { get; private set; }
+    public ICollection<Employee> Employees { get; private set; } = new List<Employee>();
 }

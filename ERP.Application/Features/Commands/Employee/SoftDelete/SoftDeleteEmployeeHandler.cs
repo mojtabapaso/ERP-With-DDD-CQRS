@@ -2,7 +2,7 @@
 using ERP.Shared.Common.ResultPattern;
 using MediatR;
 
-namespace ERP.Application.Features.Commands.Employee.UpdateEmployee;
+namespace ERP.Application.Features.Commands.Employee.SoftDelete;
 
 public class SoftDeleteEmployeeHandler : IRequestHandler<SoftDeleteEmployeeRequest, Result<string>>
 {

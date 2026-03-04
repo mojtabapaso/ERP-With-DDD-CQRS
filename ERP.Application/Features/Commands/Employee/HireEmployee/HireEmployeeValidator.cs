@@ -2,19 +2,12 @@
 using ERP.Domain.Enums;
 using FluentValidation;
 
-namespace ERP.Application.Features.Commands.Employee.UpdateEmployee;
+namespace ERP.Application.Features.Commands.Employee.HireEmployee;
 
-
-public class UpdateEmployeeValidator : AbstractValidator<UpdateEmpoyeeDto>
+public class HireEmployeeValidator : AbstractValidator<HireEmployeeDto>
 {
-    public UpdateEmployeeValidator()
+    public HireEmployeeValidator()
     {
-
-        RuleFor(x => x.RowId)
-            .NotEmpty().WithMessage("RowId is required.");
-
-
-
         // NationalCode: optional, but if provided must be valid
         When(x => !string.IsNullOrEmpty(x.NationalCode), () =>
         {
@@ -37,12 +30,7 @@ public class UpdateEmployeeValidator : AbstractValidator<UpdateEmpoyeeDto>
                 .IsInEnum().WithMessage("Employee position is invalid.");
         });
 
+        RuleFor(x => x.CompanyId).NotNull().NotEmpty().WithMessage("Company Id required");
 
-        // DegreeLevel: optional, but if provided must be valid enum
-        When(x => x.DegreeLevel.HasValue, () =>
-        {
-            RuleFor(x => x.DegreeLevel.Value)
-                .IsInEnum().WithMessage("Degree level is invalid.");
-        });
     }
 }

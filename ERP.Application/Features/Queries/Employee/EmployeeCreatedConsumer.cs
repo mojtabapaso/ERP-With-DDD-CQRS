@@ -4,7 +4,7 @@ using MassTransit;
 namespace ERP.Application.Features.Queries.Employee;
 
 
-public class EmployeeCreatedConsumer : IConsumer<EmployeeCreated>
+public class EmployeeCreatedConsumer : IConsumer<EmployeeCreatedMessage>
 {
     //private readonly IMongoDbService _mongoService;
 
@@ -13,7 +13,7 @@ public class EmployeeCreatedConsumer : IConsumer<EmployeeCreated>
     //    _mongoService = mongoService;
     //}
 
-    public async Task Consume(ConsumeContext<EmployeeCreated> context)
+    public async Task Consume(ConsumeContext<EmployeeCreatedMessage> context)
     {
         var message = context.Message;
 

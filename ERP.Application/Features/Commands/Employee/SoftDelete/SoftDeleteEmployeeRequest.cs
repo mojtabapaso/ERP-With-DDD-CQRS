@@ -1,7 +1,7 @@
 ﻿using ERP.Domain.ValueObjects;
 using ERP.Shared.Common.ResultPattern;
 using MediatR;
-namespace ERP.Application.Features.Commands.Employee.UpdateEmployee;
+namespace ERP.Application.Features.Commands.Employee.SoftDelete;
 
 public class SoftDeleteEmployeeRequest : IRequest<Result<string>>
 {

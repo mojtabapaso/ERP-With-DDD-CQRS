@@ -47,12 +47,22 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
 
     public async Task<TEntity> CreateAsync(TEntity entity)
     {
+        try
+        {
         await _dbSet.AddAsync(entity);
         await _context.SaveChangesAsync();
         //await _context.PublishEntityChangesAsync(publish);
         //_context.AddDomainEvent(new EntityCreatedEvent<TEntity>(entity));
         
         return entity;
+
+
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
     }
 
     public async Task DeleteByIdAsync(BaseId id)
@@ -108,7 +118,7 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
         try
         {
             var rowId = await _dbSet
-         .Where(x => x.Id == Id)
+         .Where(x => x.Id == Id.Value)
          .Select(x => x.RowId)
          .FirstOrDefaultAsync();
 

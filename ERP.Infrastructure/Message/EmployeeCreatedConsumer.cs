@@ -8,16 +8,16 @@ using MongoDB.Driver;
 
 namespace ERP.Infrastructure.Message;
 
-public class EmployeeCreatedConsumer : IConsumer<EmployeeCreated>
+public class EmployeeCreatedConsumer : IConsumer<EmployeeCreatedMessage>
 {
-    private readonly IMongoCollection<EmployeeCreated> _companies;
+    private readonly IMongoCollection<EmployeeCreatedMessage> _companies;
 
     public EmployeeCreatedConsumer(IMongoDatabase database)
     {
-        _companies = database.GetCollection<EmployeeCreated>("CompanyAndUsers");
+        _companies = database.GetCollection<EmployeeCreatedMessage>("CompanyAndUsers");
     }
 
-    private async Task UpsertCompanyAndItsEmployee(EmployeeCreated employee, Guid companyId)
+    private async Task UpsertCompanyAndItsEmployee(EmployeeCreatedMessage employee, Guid companyId)
     {
 
 
@@ -50,7 +50,7 @@ public class EmployeeCreatedConsumer : IConsumer<EmployeeCreated>
         //await _companies.UpdateOneAsync(filter, update, options);
     }
 
-    public async Task Consume(ConsumeContext<EmployeeCreated> context)
+    public async Task Consume(ConsumeContext<EmployeeCreatedMessage> context)
     {
         await _companies.InsertOneAsync(context.Message);
 
@@ -79,7 +79,7 @@ public class EmployeeCreatedConsumer : IConsumer<EmployeeCreated>
 
 
 
-public class EmployeeUpdatedConsumer : IConsumer<EmployeeUpdated>
+public class EmployeeUpdatedConsumer : IConsumer<EmployeeUpdatedMessage>
 {
     private readonly IMongoCollection<CompanyAndItsEmployeeReadModel> _companies;
 
@@ -119,7 +119,7 @@ public class EmployeeUpdatedConsumer : IConsumer<EmployeeUpdated>
         }
     }
 
-    public async Task Consume(ConsumeContext<EmployeeUpdated> context)
+    public async Task Consume(ConsumeContext<EmployeeUpdatedMessage> context)
     {
         var message = context.Message;
 
@@ -149,9 +149,9 @@ public class EmployeeUpdatedConsumer : IConsumer<EmployeeUpdated>
 }
 
 
-public class EmployeeDeletedConsumer : IConsumer<EmployeeDeleted>
+public class EmployeeDeletedConsumer : IConsumer<EmployeeDeletedMessage>
 {
-    public async Task Consume(ConsumeContext<EmployeeDeleted> context)
+    public async Task Consume(ConsumeContext<EmployeeDeletedMessage> context)
     {
         var message = context.Message;
 

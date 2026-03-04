@@ -6,4 +6,4 @@ using MediatR;
 
 namespace ERP.Application.Features.Commands.Employee.HireEmployee;
 
-public record HireEmployeeCommand(RowIdValueObject rowId, DateTime? updatedAt, FirstName firstName, LastName lastName, NationalCode nationalCode, BirthDate birthDateUtc, EmployeePosition employeePosition, int companyId, Company company, DegreeLevel DegreeLevel) : IRequest<Result<string>>;
+//public record HireEmployeeCommand(RowIdValueObject rowId, DateTime? updatedAt, FirstName firstName, LastName lastName, NationalCode nationalCode, BirthDate birthDateUtc, EmployeePosition employeePosition, int companyId, Company company, DegreeLevel DegreeLevel) : IRequest<Result<string>>;

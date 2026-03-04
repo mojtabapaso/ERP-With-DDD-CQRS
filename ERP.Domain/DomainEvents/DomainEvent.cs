@@ -1,30 +1,19 @@
-﻿using ERP.Domain.Common;
+﻿using ERP.Domain.Entities;
+using ERP.Shared.Abstraction.Domain;
 
 namespace ERP.Domain.DomainEvents;
 
+public abstract record DomainEvent<TEntity>(Guid AggregateId) : IDomainEvent
+{
+    public int Version { get; init; } = 1;
+    public string AggregateType { get; init; } = typeof(TEntity).Name;
+    public string EventType { get; init; } 
+    public Guid Id { get; init; } = Guid.NewGuid();
+    public DateTimeOffset OccurredOnUtc { get; init; } = DateTimeOffset.UtcNow;
+    public string? TraceInfo { get; init; }
+    protected DomainEvent() : this(Guid.NewGuid())
+    {
+        EventType = GetType().Name;  
+    }
 
-//public abstract class DomainEvent<TEntity> where TEntity : BaseEntity
-//{
-//    public string EntityName { get; }
-//    public DateTime OccurredOn { get; } = DateTime.UtcNow;
-
-//    protected DomainEvent(TEntity entity)
-//    {
-//        EntityName = entity.GetType().Name;
-//    }
-//}
-
-//public class EntityCreatedEvent<TEntity> : DomainEvent<TEntity> where TEntity : BaseEntity
-//{
-//    public EntityCreatedEvent(TEntity entity) : base(entity) { }
-//}
-
-//public class EntityUpdatedEvent<TEntity> : DomainEvent<TEntity> where TEntity : BaseEntity
-//{
-//    public EntityUpdatedEvent(TEntity entity) : base(entity) { }
-//}
-
-//public class EntityDeletedEvent<TEntity> : DomainEvent<TEntity> where TEntity : BaseEntity
-//{
-//    public EntityDeletedEvent(TEntity entity) : base(entity) { }
-//}
+}

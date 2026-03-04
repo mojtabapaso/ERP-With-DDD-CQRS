@@ -103,23 +103,22 @@ public class Employee : AggregateRoot<Employee>
         return employee;
     }
 
-    // ۲. انتقال به شرکت دیگر
-    //public void TransferToCompany(Company newCompany, EmployeePosition newPosition)
-    //{
-    //    if (_employmentStatus != EmploymentStatus.Active)
-    //        throw new EmployeeNotActiveException("Cannot transfer non-active employee");
+    public void TransferToCompany(Company newCompany, EmployeePosition newPosition)
+    {
+        if (_employmentStatus != EmploymentStatus.Active)
+            throw new EmployeeNotActiveException("Cannot transfer non-active employee");
 
-    //    var oldCompanyId = _companyId;
-    //    _companyId = newCompany.Id;
-    //    _company = newCompany;
-    //    _employeePosition = newPosition;
+        var oldCompanyId = _companyId;
+        _companyId = newCompany.Id;
+        _company = newCompany;
+        _employeePosition = newPosition;
 
-    //    AddDomainEvent(new EmployeeTransferredEvent(
-    //        Id,
-    //        oldCompanyId,
-    //        newCompany.Id,
-    //        newPosition));
-    //}
+        AddDomainEvent(new EmployeeTransferredEvent(
+            RowId,
+            oldCompanyId,
+            newCompany.Id,
+            newPosition));
+    }
 
     // ۳. تغییر سمت
     //public void ChangePosition(EmployeePosition newPosition)

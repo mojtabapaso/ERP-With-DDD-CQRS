@@ -6,6 +6,7 @@ using ERP.Application.Features.Commands.Employee.SoftDelete;
 using ERP.Application.Features.Commands.Employee.UpdateEmployee;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices;
 
 namespace ERP.Presentation.Controllers;
 [ApiVersion("1.0")]
@@ -63,7 +64,18 @@ public class EmployeeController : ControllerBase
         }
         return Ok(res);
     }
-        
+    [HttpPost("TransferToCompany")]
+    public async Task<IActionResult> TransferToCompany([FromBody] TransferToCompanyDto TransferToCompanyDto)
+    {
+        var res = await mediator.Send(TransferToCompanyDto);
+        if (!res.IsSuccess)
+        {
+            return BadRequest(res);
+        }
+        return Ok(res);
+    }
+
+
 
 
 }

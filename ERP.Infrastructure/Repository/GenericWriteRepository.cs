@@ -9,6 +9,7 @@ using MassTransit;
 using MassTransit.Initializers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 
 namespace ERP.Infrastructure.Generic;
 
@@ -34,6 +35,11 @@ public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
     public async Task<TEntity> GetByRowIdAsync(RowIdValueObject rowId)
     {
         return await _dbSet.FirstOrDefaultAsync(c => c.RowId == rowId.Value);
+    }
+    public async Task<TEntity> GetByIdAsync(BaseId Id)
+    {
+        return await _dbSet.FirstOrDefaultAsync(x => x.Id == Id.Value);
+        //return await _dbSet.FirstOrDefaultAsync(e => EF.Property<BaseId>(e, "Id") == Id); ;
     }
     public async Task<bool> ExistByIdAsync(BaseId id)
     {

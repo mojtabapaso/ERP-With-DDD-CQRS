@@ -4,7 +4,7 @@ namespace ERP.Application.DTOs.EmployeeDTOs;
 
 public sealed record HireEmployeeDto
 {
-    public string FirstName { get; set; }
+    public string FirstName { get; init; }
     public string LastName { get; init; }
     public string NationalCode { get; init; }
     public DateTime BirthDate { get; init; }

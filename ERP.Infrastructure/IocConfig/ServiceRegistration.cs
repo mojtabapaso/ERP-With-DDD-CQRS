@@ -58,6 +58,8 @@ public static class ServiceRegistration
             x.AddConsumer<EmployeeCreatedConsumer>();
             x.AddConsumer<EmployeeUpdatedConsumer>();
             x.AddConsumer<EmployeeDeletedConsumer>();
+            // new 
+            x.AddConsumer<HireEmployeeConsumer>();
             // Transport
             x.UsingRabbitMq((context, cfg) =>
             {

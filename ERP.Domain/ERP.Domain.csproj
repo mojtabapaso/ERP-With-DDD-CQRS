@@ -8,8 +8,8 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Entities\Employee\" />
     <Folder Include="AggregateRoots\" />
+    <Folder Include="Entities\Employee\" />
     <Folder Include="Exceptions\AuthenticationManagmentExceptions\" />
     <Folder Include="Specifications\" />
   </ItemGroup>

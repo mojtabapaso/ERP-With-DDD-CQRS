@@ -1,13 +1,12 @@
-﻿using ERP.Domain.AggregateRoots;
-using ERP.Domain.ValueObjects;
+﻿using ERP.Domain.ValueObjects;
 
 namespace ERP.Domain.Common;
 
-public abstract class BaseEntity 
+public abstract class BaseEntity
 {
     public BaseEntity()
     {
-        
+
     }
     public BaseEntity(BaseId id)
     {
@@ -23,7 +22,7 @@ public abstract class BaseEntity
     protected DateTime _createdAt;
     protected DateTime? _updatedAt;
     //public BaseId BaseId => _id;
-    public int  Id => _id;
+    public int Id => _id;
     public Guid RowId => _rowId;
     //public RowId RowId => _rowId;
     public bool IsDeleted => _isDeleted;

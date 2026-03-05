@@ -1,9 +1,7 @@
 ﻿using ERP.Application.Message;
-using ERP.Domain.Entities;
 using ERP.Domain.Enums;
 using ERP.Infrastructure.MongoDbConfig;
 using MassTransit;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace ERP.Infrastructure.Message;
@@ -21,14 +19,14 @@ public class EmployeeCreatedConsumer : IConsumer<EmployeeCreatedMessage>
     {
 
 
-      await _companies.InsertOneAsync(employee);
+        await _companies.InsertOneAsync(employee);
         //try
         //{
         //var client = new MongoClient("mongodb://127.0.0.1:27017");
         //var db = client.GetDatabase("ERP");
         //var coll = db.GetCollection<BsonDocument>("test");
         //await coll.InsertOneAsync(new BsonDocument("Hello", "World"));
-  
+
 
         //}
         //catch (Exception ex)
@@ -54,6 +52,7 @@ public class EmployeeCreatedConsumer : IConsumer<EmployeeCreatedMessage>
     {
         await _companies.InsertOneAsync(context.Message);
 
+
         //var message = context.Message;
         //EmployeePosition employeePosition = (EmployeePosition)message.EmployeePosition;
         //DegreeLevel degreeLevel = (DegreeLevel)message.DegreeLevel;
@@ -67,7 +66,7 @@ public class EmployeeCreatedConsumer : IConsumer<EmployeeCreatedMessage>
         //    EmployeePosition = employeePosition.ToString(),
         //    DegreeLevel = degreeLevel.ToString()
         //};
-    
+
         //await UpsertCompanyAndItsEmployee(newEmployee, message.CompanyId);
 
         // اضافه کردن یا بروزرسانی Employee در Company مربوطه
@@ -88,11 +87,11 @@ public class EmployeeUpdatedConsumer : IConsumer<EmployeeUpdatedMessage>
         _companies = database.GetCollection<CompanyAndItsEmployeeReadModel>("CompanyAndUsers");
     }
 
-    private async Task UpdateEmployeeInCompany(EmployeeReadModel employee, Guid companyId)
+    private async Task UpdateEmployeeInCompany(EmployeeReadModelMongo employee, Guid companyId)
     {
         var filter = Builders<CompanyAndItsEmployeeReadModel>.Filter.Eq(c => c.Company.Id, companyId);
-            //&
-                     //Builders<CompanyAndItsEmployeeReadModel>.Filter.ElemMatch(c => c.Employees, u => u.Id == employee.Id);
+        //&
+        //Builders<CompanyAndItsEmployeeReadModel>.Filter.ElemMatch(c => c.Employees, u => u.Id == employee.Id);
 
         // اگر Employee موجود باشه، داده‌ها بروزرسانی شود
         var update = Builders<CompanyAndItsEmployeeReadModel>.Update
@@ -128,7 +127,7 @@ public class EmployeeUpdatedConsumer : IConsumer<EmployeeUpdatedMessage>
             EmployeePosition employeePosition = (EmployeePosition)message.EmployeePosition;
             DegreeLevel? degreeLevel = message.DegreeLevel.HasValue ? (DegreeLevel)message.DegreeLevel.Value : (DegreeLevel?)null;
 
-            var updatedEmployee = new EmployeeReadModel
+            var updatedEmployee = new EmployeeReadModelMongo
             {
                 //Id = message.EmployeeRowId,/
                 Name = $"{message.FirstName} {message.LastName}",
@@ -161,4 +160,3 @@ public class EmployeeDeletedConsumer : IConsumer<EmployeeDeletedMessage>
         // هر کاری که لازمه: ذخیره در DB, فراخوانی سرویس دیگه, ...
     }
 }
-

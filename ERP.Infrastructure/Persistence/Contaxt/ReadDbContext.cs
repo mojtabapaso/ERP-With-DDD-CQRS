@@ -1,6 +1,5 @@
-﻿using ERP.Infrastructure.MongoDbConfig;
-using ERP.Infrastructure.Persistence.Models.EmployeeManagment;
-using Microsoft.EntityFrameworkCore;
+﻿using ERP.Domain.Entities;
+using ERP.Infrastructure.MongoDbConfig;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 

@@ -7,6 +7,7 @@ namespace ERP.Domain.Repository.EmployeeManagment;
 [AutoRegister(ServiceLifetime.Scoped)]
 public interface IEmployeeWriteRepository : IGenericWriteRepository<Employee>
 {
+    Task<EmployeeReadModel> GetEmployeeReadModelByEmployeeId(int Id);
 }
 
 [AutoRegister(ServiceLifetime.Scoped)]

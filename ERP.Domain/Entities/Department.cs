@@ -5,11 +5,24 @@ namespace ERP.Domain.Entities;
 
 public class Department : BaseEntity
 {
-    public Department() : base(default!)
+    // for EF 
+    public Department() : base()
     {
     }
-
-    public string Name { get; private set; } = default!;
-    public string Description { get; private set; }
+    private Department(string name, string description, ICollection<Employee> Employees)
+    {
+         
+    }
+    private string _name;
+    private string _description;
+    public NameValueObject Name =>_name;
+    public DescriptionValueObject Description => _description;
     public ICollection<Employee> Employees { get; private set; } = new List<Employee>();
+
+    //factory method 
+    public static Department Create(string name, string description, ICollection<Employee> Employees)
+    {
+        return new Department(name, description, Employees);
+    }
+
 }

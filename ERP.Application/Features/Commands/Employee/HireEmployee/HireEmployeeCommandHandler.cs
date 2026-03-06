@@ -1,9 +1,8 @@
-﻿using ERP.Application.Message;
+﻿using ERP.Domain.Events.EmployeeManagment;
 using ERP.Domain.Repository.EmployeeManagment;
 using ERP.Shared.Common.ResultPattern;
 using MassTransit;
 using MediatR;
-using System.Security.Cryptography;
 
 namespace ERP.Application.Features.Commands.Employee.HireEmployee;
 
@@ -12,7 +11,7 @@ public class HireEmployeeCommandHandler : IRequestHandler<HireEmployeeRequest, R
     private readonly IEmployeeWriteRepository employeeWriteRepository;
     private readonly IPublishEndpoint publishEndpoint;
 
-    public HireEmployeeCommandHandler(IEmployeeWriteRepository employeeWriteRepository, IPublishEndpoint publishEndpoint )
+    public HireEmployeeCommandHandler(IEmployeeWriteRepository employeeWriteRepository, IPublishEndpoint publishEndpoint)
     {
         this.employeeWriteRepository = employeeWriteRepository;
         this.publishEndpoint = publishEndpoint;
@@ -25,24 +24,19 @@ public class HireEmployeeCommandHandler : IRequestHandler<HireEmployeeRequest, R
         {
             return Result<string>.Error(isValid.Errors.Select(x => x.ErrorMessage).ToList());
         }
-        var employee = new ERP.Domain.Entities.Employee();
+
         //:TODO use mapper hear 
-        var newEmployee = employee.Create(request.HireEmpoyeeDto.FirstName, request.HireEmpoyeeDto.LastName, request.HireEmpoyeeDto.NationalCode, request.HireEmpoyeeDto.BirthDate, request.HireEmpoyeeDto.EmployeePosition, request.HireEmpoyeeDto.CompanyId, request.HireEmpoyeeDto.DegreeLevel);
+        var newEmployee = Domain.Entities.Employee.Hire(request.HireEmpoyeeDto.FirstName, request.HireEmpoyeeDto.LastName,
+            request.HireEmpoyeeDto.NationalCode, request.HireEmpoyeeDto.BirthDate,
+            request.HireEmpoyeeDto.EmployeePosition, request.HireEmpoyeeDto.CompanyId,
+            request.HireEmpoyeeDto.DegreeLevel, request.HireEmpoyeeDto.Salary);
         await employeeWriteRepository.CreateAsync(newEmployee);
 
-        await publishEndpoint.Publish(new HireEmployeeMessage  {
-            //EmployeeRowId = newEmployee.RowId,
-            EmployeeId = newEmployee.Id//,
-            //FirstName = newEmployee.FirstName.Value,
-            //LastName = newEmployee.LastName.Value,
-            //NationalCode = newEmployee.NationalCode.Value,
-            //BirthDateUtc = newEmployee.BirthDateUtc.Value,
-            //EmployeePosition = (int)newEmployee.EmployeePosition,
-           // CompanyId = companyRowId,
-            //DegreeLevel = (int)newEmployee.DegreeLevel
-        }, cancellationToken);
-
+        foreach (EmployeeHiredEvent item in newEmployee.DomainEvents)
+        {
+            await publishEndpoint.Publish(item, cancellationToken);
+        }
+        newEmployee.ClearDomainEvents();
         return Result<string>.Success("ok");
-
     }
 }

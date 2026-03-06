@@ -8,6 +8,7 @@ namespace ERP.Domain.Repository.EmployeeManagment;
 public interface IEmployeeWriteRepository : IGenericWriteRepository<Employee>
 {
     Task<EmployeeReadModel> GetEmployeeReadModelByEmployeeId(int Id);
+    Task<EmployeeReadModel> GetEmployeeReadModelByEmployeeRowId(Guid rowId);
 }
 
 [AutoRegister(ServiceLifetime.Scoped)]

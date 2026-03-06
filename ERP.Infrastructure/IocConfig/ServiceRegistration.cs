@@ -55,11 +55,12 @@ public static class ServiceRegistration
         services.AddMassTransit(x =>
         {
             // Consumers
+            // new 
+            x.AddConsumer<HireEmployeeConsumer>();
+            // old
             x.AddConsumer<EmployeeCreatedConsumer>();
             x.AddConsumer<EmployeeUpdatedConsumer>();
             x.AddConsumer<EmployeeDeletedConsumer>();
-            // new 
-            x.AddConsumer<HireEmployeeConsumer>();
             // Transport
             x.UsingRabbitMq((context, cfg) =>
             {

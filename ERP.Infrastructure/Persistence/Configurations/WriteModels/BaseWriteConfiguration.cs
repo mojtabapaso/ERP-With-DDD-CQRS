@@ -27,8 +27,8 @@ internal class BaseWriteConfiguration<TEntity> : IEntityTypeConfiguration<TEntit
         builder.Property(e => e.RowId)
                .HasField("_rowId")
                .UsePropertyAccessMode(PropertyAccessMode.Field)
-               .HasColumnName("RowId")
-               .HasDefaultValueSql("NEWID()");
+               .HasColumnName("RowId");
+              // .HasDefaultValueSql("NEWID()");
         // _isDeleted property
         builder.Property(typeof(bool), "_isDeleted")
                .HasField("_isDeleted")

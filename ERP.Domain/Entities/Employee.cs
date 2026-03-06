@@ -10,7 +10,7 @@ namespace ERP.Domain.Entities;
 public class Employee : AggregateRoot<Employee>
 {
     // Public CTOR for EF
-    public Employee() : base() 
+    public Employee() : base()
     {
     }
     // Private CTOR 
@@ -19,7 +19,14 @@ public class Employee : AggregateRoot<Employee>
                      EmployeePosition employeePosition, int companyId,
                      DegreeLevel? degreeLevel)
     {
-        _firstName = firstName; _lastName = lastName; _nationalCode = nationalCode; _birthDateUtc = birthDateUtc; _employeePosition = employeePosition; _companyId = companyId; _degreeLevel = degreeLevel;
+        _rowId = Guid.NewGuid();
+        _firstName = firstName;
+        _lastName = lastName;
+        _nationalCode = nationalCode;
+        _birthDateUtc = birthDateUtc;
+        _employeePosition = employeePosition;
+        _companyId = companyId;
+        _degreeLevel = degreeLevel;
     }
 
     // ───── Backing Fields ─────
@@ -86,20 +93,12 @@ public class Employee : AggregateRoot<Employee>
         _companyId = companyId;
         _degreeLevel = degreeLevel;
     }
-    // Factory Method
-    public Employee Hire(FirstName firstName, LastName lastName, NationalCode nationalCode,
+    public static Employee Hire(FirstName firstName, LastName lastName, NationalCode nationalCode,
         BirthDate birthDateUtc, EmployeePosition position, int companyId, DegreeLevel? degreeLevel, MoneyValueObject salary)
     {
         var employee = new Employee(firstName, lastName, nationalCode, birthDateUtc, position, companyId, degreeLevel);
         employee.SetSalary(salary, DateTime.UtcNow);
-
-        employee.AddDomainEvent(new EmployeeHiredEvent(
-            AggregateId: RowId,
-            employee.Id,
-            companyId,
-            employee.FullName,
-            position));
-
+        employee.AddDomainEvent(new EmployeeHiredEvent(employee.RowId));
         return employee;
     }
 

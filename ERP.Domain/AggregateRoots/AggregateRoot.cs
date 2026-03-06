@@ -1,22 +1,25 @@
 ﻿using ERP.Domain.Common;
 using ERP.Shared.Abstraction.Domain;
+using MediatR;
 
 namespace ERP.Domain.AggregateRoots;
 
 public abstract class AggregateRoot<TEntity> : BaseEntity
 {
-    private readonly List<IDomainEvent> _domainEvents = new();
     
-    public IReadOnlyCollection<IDomainEvent> DomainEvents => 
+    
+    private readonly List<INotification> _domainEvents = new();
+    
+    public IReadOnlyCollection<INotification> DomainEvents => 
         _domainEvents.AsReadOnly();
-    
-    protected void AddDomainEvent(IDomainEvent domainEvent)
+
+    protected void AddDomainEvent(INotification domainEvent)
     {
         _domainEvents.Add(domainEvent);
     }
     
-    protected void RemoveDomainEvent(IDomainEvent domainEvent)
-    {
+    protected void RemoveDomainEvent(INotification domainEvent)
+    {   
         _domainEvents.Remove(domainEvent);
     }
     

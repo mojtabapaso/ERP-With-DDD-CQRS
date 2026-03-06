@@ -1,8 +1,9 @@
-﻿using ERP.Domain.ValueObjects;
+﻿using ERP.Domain.AggregateRoots;
+using ERP.Domain.ValueObjects;
 
 namespace ERP.Domain.Common;
 
-public abstract class BaseEntity
+public abstract class BaseEntity : DomianEvent
 {
     public BaseEntity()
     {

@@ -1,4 +1,5 @@
-﻿using ERP.Domain.Events.EmployeeManagment;
+﻿using ERP.Domain.AggregateRoots;
+using ERP.Domain.Events.EmployeeManagment;
 using ERP.Domain.Repository.EmployeeManagment;
 using ERP.Shared.Common.ResultPattern;
 using MassTransit;
@@ -24,9 +25,7 @@ public class HireEmployeeCommandHandler : IRequestHandler<HireEmployeeRequest, R
         {
             return Result<string>.Error(isValid.Errors.Select(x => x.ErrorMessage).ToList());
         }
-
-        //:TODO use mapper hear 
-        var newEmployee = Domain.Entities.Employee.Hire(request.HireEmpoyeeDto.FirstName, request.HireEmpoyeeDto.LastName,
+        var newEmployee =  EmployeeAggregateRoot.HireNewEmployee(request.HireEmpoyeeDto.FirstName, request.HireEmpoyeeDto.LastName,
             request.HireEmpoyeeDto.NationalCode, request.HireEmpoyeeDto.BirthDate,
             request.HireEmpoyeeDto.EmployeePosition, request.HireEmpoyeeDto.CompanyId,
             request.HireEmpoyeeDto.DegreeLevel, request.HireEmpoyeeDto.Salary);
@@ -37,6 +36,6 @@ public class HireEmployeeCommandHandler : IRequestHandler<HireEmployeeRequest, R
             await publishEndpoint.Publish(item, cancellationToken);
         }
         newEmployee.ClearDomainEvents();
-        return Result<string>.Success("ok");
+        return Result<string>.Success($"{newEmployee.RowId}");
     }
 }

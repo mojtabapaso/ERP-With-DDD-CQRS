@@ -3,6 +3,8 @@ using ERP.Shared.Abstraction.Domain;
 
 namespace ERP.Domain.DomainEvents;
 
+
+// TODO Deleted 
 public abstract record DomainEvent<TEntity>(Guid AggregateId) : IDomainEvent
 {
     public int Version { get; init; } = 1;
@@ -11,9 +13,9 @@ public abstract record DomainEvent<TEntity>(Guid AggregateId) : IDomainEvent
     public Guid Id { get; init; } = Guid.NewGuid();
     public DateTimeOffset OccurredOnUtc { get; init; } = DateTimeOffset.UtcNow;
     public string? TraceInfo { get; init; }
-    protected DomainEvent() : this(Guid.NewGuid())
-    {
-        EventType = GetType().Name;  
-    }
+    //protected DomainEvent() : this(Guid.NewGuid())
+    //{
+    //    EventType = GetType().Name;  
+    //}
 
 }

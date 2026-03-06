@@ -1,4 +1,5 @@
 ﻿using ERP.Domain.AggregateRoots;
+using ERP.Domain.Common;
 using ERP.Domain.DomainEvents;
 using ERP.Domain.Enums;
 using ERP.Domain.Events.EmployeeManagment;
@@ -7,7 +8,7 @@ using ERP.Domain.ValueObjects;
 
 namespace ERP.Domain.Entities;
 
-public class Employee : AggregateRoot<Employee>
+public class Employee : BaseEntity// : AggregateRoot<Employee>
 {
     // Public CTOR for EF
     public Employee() : base()
@@ -93,7 +94,7 @@ public class Employee : AggregateRoot<Employee>
         _companyId = companyId;
         _degreeLevel = degreeLevel;
     }
-    public static Employee Hire(FirstName firstName, LastName lastName, NationalCode nationalCode,
+    public  Employee Hire(FirstName firstName, LastName lastName, NationalCode nationalCode,
         BirthDate birthDateUtc, EmployeePosition position, int companyId, DegreeLevel? degreeLevel, MoneyValueObject salary)
     {
         var employee = new Employee(firstName, lastName, nationalCode, birthDateUtc, position, companyId, degreeLevel);

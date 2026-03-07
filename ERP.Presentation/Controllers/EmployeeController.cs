@@ -6,9 +6,9 @@ using ERP.Application.Features.Commands.Employee.SoftDelete;
 using ERP.Application.Features.Commands.Employee.UpdateEmployee;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.InteropServices;
 
 namespace ERP.Presentation.Controllers;
+
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}")]
 [ApiController]
@@ -44,7 +44,7 @@ public class EmployeeController : ControllerBase
     [HttpDelete("Employee")]
     public async Task<IActionResult> SoftDelete([FromBody] SoftDeleteEmployeeDto softDeleteEmployeeDto)
     {
-        var res = await mediator.Send(new SoftDeleteEmployeeRequest() { RowId = softDeleteEmployeeDto .RowId});
+        var res = await mediator.Send(new SoftDeleteEmployeeRequest() { RowId = softDeleteEmployeeDto.RowId });
         if (!res.IsSuccess)
         {
             return BadRequest(res);
@@ -74,8 +74,5 @@ public class EmployeeController : ControllerBase
         }
         return Ok(res);
     }
-
-
-
 
 }

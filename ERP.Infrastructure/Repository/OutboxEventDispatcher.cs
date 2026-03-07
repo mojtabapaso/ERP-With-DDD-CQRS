@@ -7,49 +7,49 @@ using Microsoft.Identity.Client;
 
 namespace ERP.Infrastructure.Repository;
 
-public class OutboxEventDispatcher : IOutboxEventDispatcher
-{
-    private readonly WriteDbContext _context;
-    private readonly DbSet<EntityOutbox> _dbSet;
+//public class OutboxEventDispatcher : IOutboxEventDispatcher
+//{
+//    private readonly WriteDbContext _context;
+//    private readonly DbSet<EntityOutbox> _dbSet;
 
-    public OutboxEventDispatcher(WriteDbContext context)
-    {
-        _context = context;
-        _dbSet = context.Set<EntityOutbox>();
-    }
+//    public OutboxEventDispatcher(WriteDbContext context)
+//    {
+//        _context = context;
+//        _dbSet = context.Set<EntityOutbox>();
+//    }
 
-    public Task Insert<TEntity>(int id) where TEntity : class
-        => AddToOutbox<TEntity>(id, ActionType.INSERT);
+//    public Task Insert<TEntity>(int id) where TEntity : class
+//        => AddToOutbox<TEntity>(id, ActionType.INSERT);
 
-    public Task Update<TEntity>(int id) where TEntity : class
-        => AddToOutbox<TEntity>(id, ActionType.UPDATE);
+//    public Task Update<TEntity>(int id) where TEntity : class
+//        => AddToOutbox<TEntity>(id, ActionType.UPDATE);
 
-    public Task Delete<TEntity>(int id) where TEntity : class
-        => AddToOutbox<TEntity>(id, ActionType.DELETE);
+//    public Task Delete<TEntity>(int id) where TEntity : class
+//        => AddToOutbox<TEntity>(id, ActionType.DELETE);
 
-    private async Task AddToOutbox<TEntity>(int entityId, ActionType actionType) where TEntity : class
-    {
-        var fullName = GetFullTableName<TEntity>(_context);
+//    private async Task AddToOutbox<TEntity>(int entityId, ActionType actionType) where TEntity : class
+//    {
+//        var fullName = GetFullTableName<TEntity>(_context);
 
-        await _dbSet.AddAsync(new EntityOutbox
-        {
-            EntityId = entityId,
-            //EntityFullName = fullName,
-            ActionType = actionType,
-            CreatedDate = DateTime.UtcNow,
-            Success = false
-        });
-    }
+//        await _dbSet.AddAsync(new EntityOutbox
+//        {
+//            EntityId = entityId,
+//            //EntityFullName = fullName,
+//            ActionType = actionType,
+//            CreatedDate = DateTime.UtcNow,
+//            Success = false
+//        });
+//    }
 
-    private static string GetFullTableName<TEntity>(DbContext context) where TEntity : class
-    {
-        var entityType = context.Model.FindEntityType(typeof(TEntity));
-        if (entityType == null)
-            throw new InvalidOperationException($"Entity type {typeof(TEntity).Name} not found in DbContext.");
+//    private static string GetFullTableName<TEntity>(DbContext context) where TEntity : class
+//    {
+//        var entityType = context.Model.FindEntityType(typeof(TEntity));
+//        if (entityType == null)
+//            throw new InvalidOperationException($"Entity type {typeof(TEntity).Name} not found in DbContext.");
 
-        var schema = entityType.GetSchema() ?? "dbo";
-        var tableName = entityType.GetTableName();
+//        var schema = entityType.GetSchema() ?? "dbo";
+//        var tableName = entityType.GetTableName();
 
-        return $"{schema}.{tableName}";
-    }
-}
+//        return $"{schema}.{tableName}";
+//    }
+//}

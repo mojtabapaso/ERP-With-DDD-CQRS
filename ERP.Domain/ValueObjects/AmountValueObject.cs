@@ -20,11 +20,9 @@ public sealed record AmountValueObject
     // حداکثر مقدار مجاز (مثلاً در سیاست مالی شرکت)
     public const int MaxAmount = 1_000_000_000; // 1 میلیارد
 
-    // عملگرهای ضمنی برای راحتی استفاده
     public static implicit operator AmountValueObject(int value) => new AmountValueObject(value);
     public static implicit operator int(AmountValueObject amount) => amount.Value;
 
-    // عملگرهای ریاضی امن
     public static AmountValueObject operator +(AmountValueObject a1, AmountValueObject a2)
         => new AmountValueObject(a1.Value + a2.Value);
 

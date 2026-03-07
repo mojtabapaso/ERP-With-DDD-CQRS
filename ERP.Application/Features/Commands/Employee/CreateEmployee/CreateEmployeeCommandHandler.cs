@@ -15,14 +15,12 @@ public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeReques
     private readonly IEmployeeWriteRepository employeeRepository;
     private readonly ICompanyWriteRepository companyRepository;
     private readonly IPublishEndpoint _publishEndpoint;
-    private readonly IOutboxEventDispatcher outboxEventDispatcher;
 
-    public CreateEmployeeCommandHandler(IEmployeeWriteRepository employeeRepository, ICompanyWriteRepository companyRepository, IPublishEndpoint publishEndpoint, IOutboxEventDispatcher outboxEventDispatcher)
+    public CreateEmployeeCommandHandler(IEmployeeWriteRepository employeeRepository, ICompanyWriteRepository companyRepository, IPublishEndpoint publishEndpoint)
     {
         this.employeeRepository = employeeRepository;
         this.companyRepository = companyRepository;
         _publishEndpoint = publishEndpoint;
-        this.outboxEventDispatcher = outboxEventDispatcher;
     }
 
     public async Task<Result<string>> Handle(CreateEmployeeRequest request, CancellationToken cancellationToken)

@@ -1,141 +1,115 @@
 ﻿using ERP.Domain.Common;
-using ERP.Domain.DomainEvents;
 using ERP.Domain.Repository;
 using ERP.Domain.ValueObjects;
-using ERP.Infrastructure.IocConfig;
-using ERP.Infrastructure.Persistence;
 using ERP.Infrastructure.Persistence.Contaxt;
 using MassTransit;
 using MassTransit.Initializers;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.InteropServices;
 
 namespace ERP.Infrastructure.Generic;
 
 public class GenericWriteRepository<TEntity> : IGenericWriteRepository<TEntity>
     where TEntity : BaseEntity
 {
-    protected readonly WriteDbContext _context;
+    protected readonly WriteDbContext context;
     private readonly IPublishEndpoint publish;
-    protected readonly DbSet<TEntity> _dbSet;
+    protected readonly DbSet<TEntity> dbSet;
 
     public GenericWriteRepository(WriteDbContext context, IPublishEndpoint publish)
     {
-        _context = context;
+        this.context = context;
         this.publish = publish;
-        _dbSet = _context.Set<TEntity>();
+        dbSet = this.context.Set<TEntity>();
     }
 
     public GenericWriteRepository(WriteDbContext context)
     {
-        _context = context;
-        _dbSet = _context.Set<TEntity>();
+        this.context = context;
+        dbSet = this.context.Set<TEntity>();
     }
     public async Task<TEntity> GetByRowIdAsync(RowIdValueObject rowId)
     {
-        return await _dbSet.FirstOrDefaultAsync(c => c.RowId == rowId.Value);
+        return await dbSet.FirstOrDefaultAsync(c => c.RowId == rowId.Value);
     }
     public async Task<TEntity> GetByIdAsync(BaseId Id)
     {
-        return await _dbSet.FirstOrDefaultAsync(x => x.Id == Id.Value);
+        return await dbSet.FirstOrDefaultAsync(x => x.Id == Id.Value);
         //return await _dbSet.FirstOrDefaultAsync(e => EF.Property<BaseId>(e, "Id") == Id); ;
     }
     public async Task<bool> ExistByIdAsync(BaseId id)
     {
-        return await _dbSet.AnyAsync(e => EF.Property<BaseId>(e, "Id") == id);
+        return await dbSet.AnyAsync(e => EF.Property<BaseId>(e, "Id") == id);
     }
 
     public async Task<bool> ExistByRowIdAsync(RowIdValueObject id)
     {
-        return await _dbSet.AnyAsync(e => EF.Property<RowIdValueObject>(e, "RowId") == id);
+        return await dbSet.AnyAsync(e => EF.Property<RowIdValueObject>(e, "RowId") == id);
     }
 
     public async Task<TEntity> CreateAsync(TEntity entity)
     {
-        try
-        {
-        await _dbSet.AddAsync(entity);
-        await _context.SaveChangesAsync();
+        await dbSet.AddAsync(entity);
+        await context.SaveChangesAsync();
         //await _context.PublishEntityChangesAsync(publish);
         //_context.AddDomainEvent(new EntityCreatedEvent<TEntity>(entity));
-        
         return entity;
-
-
-        }
-        catch (Exception ex)
-        {
-
-            throw ex;
-        }
     }
 
     public async Task DeleteByIdAsync(BaseId id)
     {
-        var entity = await _dbSet.FirstOrDefaultAsync(e => EF.Property<BaseId>(e, "Id") == id);
+        TEntity? entity = await dbSet.FirstOrDefaultAsync(e => EF.Property<BaseId>(e, "Id") == id);
         if (entity != null)
         {
-            _dbSet.Remove(entity);
-            await _context.SaveChangesAsync();
+            dbSet.Remove(entity);
+            await context.SaveChangesAsync();
         }
     }
 
     public async Task SoftDeleteByIdAsync(BaseId id)
     {
-        var entity = await _dbSet.FirstOrDefaultAsync(e => EF.Property<BaseId>(e, "Id") == id);
+        TEntity? entity = await dbSet.FirstOrDefaultAsync(e => EF.Property<BaseId>(e, "Id") == id);
         if (entity != null)
         {
             entity.Delete();
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
     }
 
     public async Task DeleteByRowIdAsync(RowIdValueObject rowId)
     {
-        var entity = await _dbSet.FirstOrDefaultAsync(e => EF.Property<RowIdValueObject>(e, "RowId") == rowId);
+        TEntity? entity = await dbSet.FirstOrDefaultAsync(e => EF.Property<RowIdValueObject>(e, "RowId") == rowId);
         if (entity != null)
         {
-            _dbSet.Remove(entity);
-            await _context.SaveChangesAsync();
+            dbSet.Remove(entity);
+            await context.SaveChangesAsync();
         }
     }
 
     public async Task SoftDeleteByRowIdAsync(RowIdValueObject rowId)
     {
-        var entity = await _dbSet.FirstOrDefaultAsync(e => EF.Property<RowIdValueObject>(e, "RowId") == rowId);
+        TEntity? entity = await dbSet.FirstOrDefaultAsync(e => EF.Property<RowIdValueObject>(e, "RowId") == rowId);
         if (entity != null)
         {
             entity.Delete();
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
     }
 
     public async Task<TEntity> UpdateAsync(TEntity entity)
     {
         entity.MarkAsUpdated();
-        _dbSet.Update(entity);
-        await _context.SaveChangesAsync();
+        dbSet.Update(entity);
+        await context.SaveChangesAsync();
         return entity;
     }
 
     public async Task<Guid> GetRowIdByIdAsync(BaseId Id)
     {
-        try
-        {
-            var rowId = await _dbSet
-         .Where(x => x.Id == Id.Value)
-         .Select(x => x.RowId)
-         .FirstOrDefaultAsync();
-
-            return rowId;
-
-        }
-        catch (Exception ex)
-        {
-
-            throw ex;
-        }
+        Guid rowId = await dbSet
+        .Where(x => x.Id == Id.Value)
+        .Select(x => x.RowId)
+        .FirstOrDefaultAsync();
+        return rowId;
 
     }
 }

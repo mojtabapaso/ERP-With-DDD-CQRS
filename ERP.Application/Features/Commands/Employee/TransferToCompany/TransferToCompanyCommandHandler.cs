@@ -34,8 +34,6 @@ public class TransferToCompanyCommandHandler : IRequestHandler<TransferToCompany
 
         await employeeWriteRepository.UpdateAsync(employee);
 
-
-
         return Result<string>.Success("ok");
 
     }

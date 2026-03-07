@@ -11,7 +11,7 @@ namespace ERP.Domain.Entities;
 public class Employee : BaseEntity// : AggregateRoot<Employee>
 {
     // Public CTOR for EF
-    public Employee() : base()
+    public Employee() 
     {
     }
     // Private CTOR 
@@ -75,7 +75,7 @@ public class Employee : BaseEntity// : AggregateRoot<Employee>
             companyId,
         degreeLevel
             );
-        AddDomainEvent(new NewEmployeeCreated(employee.RowId, employee.FirstName, employee.LastName, employee.CompanyId));
+        //AddDomainEvent(new NewEmployeeCreated(employee.RowId, employee.FirstName, employee.LastName, employee.CompanyId));
         return employee;
     }
     public void Update(FirstName firstName,

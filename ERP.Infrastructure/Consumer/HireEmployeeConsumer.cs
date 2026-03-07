@@ -6,9 +6,7 @@ using MongoDB.Driver;
 
 namespace ERP.Infrastructure.Message;
 
-// need go to application layer
-
-// or HireEmployeeEventHandler
+// change to  EmployeeHireEventHandler
 public class HireEmployeeConsumer : IConsumer<EmployeeHiredEvent>
 {
     private readonly IEmployeeWriteRepository employeeWriteRepository;
@@ -21,8 +19,7 @@ public class HireEmployeeConsumer : IConsumer<EmployeeHiredEvent>
     }
     public async Task Consume(ConsumeContext<EmployeeHiredEvent> context)
     {
-        EmployeeHiredEvent hireEmployeeMessage = context.Message;
-        var employee = await employeeWriteRepository.GetEmployeeReadModelByEmployeeRowId(hireEmployeeMessage.employeeId);
+        var employee = await employeeWriteRepository.GetEmployeeReadModelByEmployeeRowId(context.Message.employeeId);
         await collection.InsertOneAsync(employee);
     }
 }

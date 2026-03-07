@@ -102,9 +102,9 @@ public class EmployeeUpdatedConsumer : IConsumer<EmployeeUpdatedMessage>
             .Set(c => c.Employees[-1].DegreeLevel, employee.DegreeLevel);
 
         // اگر Employee تو آرایه نبود، AddToSet کنیم (Idempotency)
-        var options = new UpdateOptions { IsUpsert = true };
+        UpdateOptions options = new UpdateOptions { IsUpsert = true };
 
-        var result = await _companies.UpdateOneAsync(filter, update, options);
+        UpdateResult result = await _companies.UpdateOneAsync(filter, update, options);
 
         if (result.MatchedCount == 0)
         {
